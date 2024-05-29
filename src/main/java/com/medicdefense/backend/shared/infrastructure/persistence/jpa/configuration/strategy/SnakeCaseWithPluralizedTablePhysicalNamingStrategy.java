@@ -1,4 +1,4 @@
-package com.medicdefense.backend.infrastructure.persistence.jpa.configuration.strategy;
+package com.medicdefense.backend.shared.infrastructure.persistence.jpa.configuration.strategy;
 
 import org.hibernate.boot.model.naming.Identifier;
 import org.hibernate.boot.model.naming.PhysicalNamingStrategy;
