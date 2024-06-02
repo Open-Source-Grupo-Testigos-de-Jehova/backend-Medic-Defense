@@ -3,7 +3,7 @@ package com.medicdefense.backend.legalcase.application.internal.commandservices;
 import com.medicdefense.backend.legalcase.domain.model.aggregates.LegalCase;
 import com.medicdefense.backend.legalcase.domain.model.commands.CreateLegalCaseCommand;
 import com.medicdefense.backend.legalcase.domain.services.LegalCaseCommandService;
-import com.medicdefense.backend.legalcase.infraestructure.persistence.jpa.LegalCaseRepository;
+import com.medicdefense.backend.legalcase.infrastructure.persistence.jpa.LegalCaseRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;

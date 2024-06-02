@@ -5,7 +5,7 @@ import com.medicdefense.backend.legalcase.domain.model.queries.GetLegalCaseByDes
 import com.medicdefense.backend.legalcase.domain.model.queries.GetLegalCaseByIdQuery;
 import com.medicdefense.backend.legalcase.domain.model.queries.GetLegalCaseByStatusQuery;
 import com.medicdefense.backend.legalcase.domain.services.LegalCaseQueryService;
-import com.medicdefense.backend.legalcase.infraestructure.persistence.jpa.LegalCaseRepository;
+import com.medicdefense.backend.legalcase.infrastructure.persistence.jpa.LegalCaseRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;

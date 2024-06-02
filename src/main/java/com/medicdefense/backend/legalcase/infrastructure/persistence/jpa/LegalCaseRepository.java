@@ -1,4 +1,4 @@
-package com.medicdefense.backend.legalcase.infraestructure.persistence.jpa;
+package com.medicdefense.backend.legalcase.infrastructure.persistence.jpa;
 
 import com.medicdefense.backend.legalcase.domain.model.aggregates.LegalCase;
 import org.springframework.data.jpa.repository.JpaRepository;
