@@ -15,12 +15,6 @@ public class LegalCaseCommandServiceImpl implements LegalCaseCommandService {
     public LegalCaseCommandServiceImpl(LegalCaseRepository legalCaseRepository) {
         this.legalCaseRepository = legalCaseRepository;
     }
-
-    /**
-     * Handles the CreateLegalCaseCommand command.
-     * @param command - The CreateLegalCaseCommand command
-     * @return an Optional of LegalCase
-     */
     @Override
     public Optional<LegalCase> handle(CreateLegalCaseCommand command) {
         var legalCase = new LegalCase(command);
