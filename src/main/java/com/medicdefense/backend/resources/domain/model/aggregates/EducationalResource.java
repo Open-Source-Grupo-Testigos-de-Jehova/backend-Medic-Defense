@@ -1,5 +1,6 @@
 package com.medicdefense.backend.resources.domain.model.aggregates;
 
+import com.medicdefense.backend.resources.domain.model.commands.CreateEducationalResourceCommand;
 import jakarta.persistence.*;
 import lombok.Getter;
 import org.springframework.data.annotation.CreatedDate;
@@ -39,21 +40,17 @@ public class EducationalResource extends AbstractAggregateRoot<EducationalResour
     private Date updatedAt;
 
     protected EducationalResource() {
-        // JPA requires a default constructor
     }
 
     /**
      * Constructor
      * It creates a new EducationalResource instance.
-     * @param title - the title of the resource
-     * @param author - the author of the resource
-     * @param contentType - the type of the content (e.g., "Article", "Video", "Book")
-     * @param url - the URL where the resource can be accessed
+     * @param command - the CreateEducationalResourceCommand command
      */
-    public EducationalResource(String title, String author, String contentType, String url) {
-        this.title = title;
-        this.author = author;
-        this.contentType = contentType;
-        this.url = url;
+    public EducationalResource(CreateEducationalResourceCommand command) {
+        this.title = command.title();
+        this.author = command.author();
+        this.contentType = command.contentType();
+        this.url = command.url();
     }
 }
