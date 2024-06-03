@@ -1,6 +1,7 @@
 package com.medicdefense.backend.legalcase.application.internal.queryservices;
 
 import com.medicdefense.backend.legalcase.domain.model.aggregates.LegalCase;
+import com.medicdefense.backend.legalcase.domain.model.queries.GetAllLegalCasesQuery;
 import com.medicdefense.backend.legalcase.domain.model.queries.GetLegalCaseByDescriptionQuery;
 import com.medicdefense.backend.legalcase.domain.model.queries.GetLegalCaseByIdQuery;
 import com.medicdefense.backend.legalcase.domain.model.queries.GetLegalCaseByStatusQuery;
@@ -32,5 +33,9 @@ public class LegalCaseQueryServiceImpl implements LegalCaseQueryService {
     @Override
     public List<LegalCase> handle(GetLegalCaseByStatusQuery query) {
         return legalCaseRepository.findByStatus(query.status());
+    }
+    @Override
+    public List<LegalCase> handle(GetAllLegalCasesQuery query) {
+        return legalCaseRepository.findAll();
     }
 }

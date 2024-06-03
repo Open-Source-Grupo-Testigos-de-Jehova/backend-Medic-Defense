@@ -4,6 +4,7 @@ import com.medicdefense.backend.legalcase.application.internal.commandservices.L
 import com.medicdefense.backend.legalcase.application.internal.queryservices.LegalCaseQueryServiceImpl;
 import com.medicdefense.backend.legalcase.domain.model.aggregates.LegalCase;
 import com.medicdefense.backend.legalcase.domain.model.commands.CreateLegalCaseCommand;
+import com.medicdefense.backend.legalcase.domain.model.queries.GetAllLegalCasesQuery;
 import com.medicdefense.backend.legalcase.domain.model.queries.GetLegalCaseByDescriptionQuery;
 import com.medicdefense.backend.legalcase.domain.model.queries.GetLegalCaseByIdQuery;
 import com.medicdefense.backend.legalcase.domain.model.queries.GetLegalCaseByStatusQuery;
@@ -56,6 +57,14 @@ public class LegalCaseController {
     @GetMapping("/status/{status}")
     public ResponseEntity<List<LegalCaseResource>> getLegalCasesByStatus(@PathVariable String status) {
         List<LegalCase> legalCases = queryService.handle(new GetLegalCaseByStatusQuery(status));
+        List<LegalCaseResource> legalCaseResources = legalCases.stream()
+                .map(LegalCaseResourceFromEntityAssembler::toResourceFromEntity)
+                .collect(Collectors.toList());
+        return ResponseEntity.ok(legalCaseResources);
+    }
+    @GetMapping("/all")
+    public ResponseEntity<List<LegalCaseResource>> getAllLegalCases() {
+        List<LegalCase> legalCases = queryService.handle(new GetAllLegalCasesQuery());
         List<LegalCaseResource> legalCaseResources = legalCases.stream()
                 .map(LegalCaseResourceFromEntityAssembler::toResourceFromEntity)
                 .collect(Collectors.toList());

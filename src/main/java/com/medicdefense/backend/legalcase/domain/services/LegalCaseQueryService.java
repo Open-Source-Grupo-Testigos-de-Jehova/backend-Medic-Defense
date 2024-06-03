@@ -1,6 +1,7 @@
 package com.medicdefense.backend.legalcase.domain.services;
 
 import com.medicdefense.backend.legalcase.domain.model.aggregates.LegalCase;
+import com.medicdefense.backend.legalcase.domain.model.queries.GetAllLegalCasesQuery;
 import com.medicdefense.backend.legalcase.domain.model.queries.GetLegalCaseByDescriptionQuery;
 import com.medicdefense.backend.legalcase.domain.model.queries.GetLegalCaseByIdQuery;
 import com.medicdefense.backend.legalcase.domain.model.queries.GetLegalCaseByStatusQuery;
@@ -12,4 +13,5 @@ public interface LegalCaseQueryService {
     Optional<LegalCase> handle(GetLegalCaseByIdQuery query);
     List<LegalCase> handle(GetLegalCaseByDescriptionQuery query);
     List<LegalCase> handle(GetLegalCaseByStatusQuery query);
+    List<LegalCase> handle(GetAllLegalCasesQuery query);
 }
