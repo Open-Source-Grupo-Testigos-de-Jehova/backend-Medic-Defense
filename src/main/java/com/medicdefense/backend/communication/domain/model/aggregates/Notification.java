@@ -1,5 +1,6 @@
 package com.medicdefense.backend.communication.domain.model.aggregates;
 
+import com.medicdefense.backend.communication.domain.model.commands.CreateNotificationCommand;
 import com.medicdefense.backend.communication.domain.model.valueobjects.Message;
 import com.medicdefense.backend.shared.domain.model.aggregates.AuditableAbstractAggregateRoot;
 import jakarta.persistence.Embedded;
@@ -13,6 +14,10 @@ public class Notification extends AuditableAbstractAggregateRoot<Notification> {
 
     public Notification(String message) {
         this.message = new Message(message);
+    }
+
+    public Notification(CreateNotificationCommand command){
+        this.message = new Message(command.message());
     }
 
     public Notification() {
