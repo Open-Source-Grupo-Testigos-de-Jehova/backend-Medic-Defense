@@ -30,8 +30,8 @@ public class MessageItem extends AuditableModel{
     @NotNull
     private Long senderId;
 
-    public MessageItem(Date date, LegalIssue legalIssue, String message, Long senderId) {
-        this.date = date;
+    public MessageItem(LegalIssue legalIssue, String message, Long senderId) {
+        this.date = new Date(System.currentTimeMillis());
         this.legalIssue = legalIssue;
         this.message = message;
         this.senderId = senderId;

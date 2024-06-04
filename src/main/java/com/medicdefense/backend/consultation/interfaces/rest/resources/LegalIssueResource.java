@@ -1,4 +1,4 @@
 package com.medicdefense.backend.consultation.interfaces.rest.resources;
 
-public record LegalIssueResource(Long LegalIssueId, String Title, String Message, Long ConsultationId, String Status) {
+public record LegalIssueResource(Long legalIssueId, String title, String message, Long consultationId, String status) {
 }

@@ -1,8 +1,7 @@
 package com.medicdefense.backend.consultation.domain.model.aggregate;
 
 import com.medicdefense.backend.consultation.domain.model.valueobjects.LegalIssueStatus;
-import com.medicdefense.backend.consultation.domain.model.valueobjects.Message;
-import com.medicdefense.backend.consultation.domain.model.valueobjects.ProfileId;
+import com.medicdefense.backend.consultation.domain.model.valueobjects.Messages;
 import com.medicdefense.backend.shared.domain.model.aggregates.AuditableAbstractAggregateRoot;
 import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
@@ -26,20 +25,20 @@ public class LegalIssue extends AuditableAbstractAggregateRoot<LegalIssue> {
     private LegalIssueStatus status;
 
     @Embedded
-    private final Message message;
+    private final Messages messages;
 
     public LegalIssue(Consultation consultation, String title, String firstMessage) {
         this.status = LegalIssueStatus.OPEN;
         this.title = title;
         this.firstMessage = firstMessage;
-        this.message = new Message();
+        this.messages = new Messages();
         addMessage(firstMessage, consultation.getLawyerID());
     }
 
     public LegalIssue() {
         this.status = LegalIssueStatus.OPEN;
         this.title = "";
-        this.message = new Message();
+        this.messages = new Messages();
     }
 
     public void close() {
@@ -47,7 +46,7 @@ public class LegalIssue extends AuditableAbstractAggregateRoot<LegalIssue> {
     }
 
     public void addMessage(String message, Long senderId) {
-        this.message.addMessageItems(this, message, senderId);
+        this.messages.addMessageItems(this, message, senderId);
     }
 
     public boolean isClosed() {

@@ -1,4 +1,4 @@
 package com.medicdefense.backend.consultation.interfaces.rest.resources;
 
-public record ConsultationResource(String MedicDefenseConsultationRecordId) {
+public record ConsultationResource(String medicDefenseConsultationRecordId) {
 }

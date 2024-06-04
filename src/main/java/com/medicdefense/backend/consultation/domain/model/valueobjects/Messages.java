@@ -11,12 +11,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Embeddable
-public class Message {
+public class Messages {
 
     @OneToMany(mappedBy = "message", cascade = CascadeType.ALL)
     private List<MessageItem> messageItemList;
 
-    public Message() {
+    public Messages() {
         this.messageItemList = new ArrayList<>();
     }
 
