@@ -1,4 +1,4 @@
-package com.medicdefense.backend.consultation.infastructure.persistence.jpa.repositories;
+package com.medicdefense.backend.consultation.infrastructure.persistence.jpa.repositories;
 
 import com.medicdefense.backend.consultation.domain.model.aggregate.Consultation;
 import com.medicdefense.backend.consultation.domain.model.valueobjects.MedicDefenseConsultationRecordId;
