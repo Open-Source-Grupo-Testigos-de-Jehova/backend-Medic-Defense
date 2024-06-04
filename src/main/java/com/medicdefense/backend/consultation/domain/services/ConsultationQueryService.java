@@ -1,16 +1,16 @@
 package com.medicdefense.backend.consultation.domain.services;
 
-import com.medicdefense.backend.consultation.domain.model.aggregate.Consultation;
-import com.medicdefense.backend.consultation.domain.model.queries.GetAllConsultationsQuery;
-import com.medicdefense.backend.consultation.domain.model.queries.GetConsultationsByMedicDefenseRecordIdQuery;
-import com.medicdefense.backend.consultation.domain.model.queries.GetConsultationsByLawyerIdQuery;
-import com.medicdefense.backend.consultation.domain.model.queries.GetConsultationsByMedicIdQuery;
+import com.medicdefense.backend.consultation.domain.model.aggregate.LegalConsultation;
+import com.medicdefense.backend.consultation.domain.model.queries.GetAllLegalConsultationsQuery;
+import com.medicdefense.backend.consultation.domain.model.queries.GetLegalConsultationsByMedicDefenseRecordIdQuery;
+import com.medicdefense.backend.consultation.domain.model.queries.GetLegalConsultationsByLawyerIdQuery;
+import com.medicdefense.backend.consultation.domain.model.queries.GetLegalConsultationsByMedicIdQuery;
 
 import java.util.List;
 
 public interface ConsultationQueryService {
-    List<Consultation> getAllConsultations(GetAllConsultationsQuery query);
-    Consultation getConsultationById(GetConsultationsByMedicDefenseRecordIdQuery query);
-    List<Consultation> getConsultationsByLawyerId(GetConsultationsByLawyerIdQuery query);
-    List<Consultation> getConsultationsByMedicId(GetConsultationsByMedicIdQuery query);
+    List<LegalConsultation> getAllLegalConsultations(GetAllLegalConsultationsQuery query);
+    LegalConsultation getLegalConsultationByMedicDefenseRecordId(GetLegalConsultationsByMedicDefenseRecordIdQuery query);
+    List<LegalConsultation> getLegalConsultationsByLawyerId(GetLegalConsultationsByLawyerIdQuery query);
+    List<LegalConsultation> getLegalConsultationsByMedicId(GetLegalConsultationsByMedicIdQuery query);
 }

@@ -1,7 +1,7 @@
 package com.medicdefense.backend.consultation.domain.model.aggregate;
 
-import com.medicdefense.backend.consultation.domain.model.commands.CreateConsultationCommand;
-import com.medicdefense.backend.consultation.domain.model.valueobjects.MedicDefenseConsultationRecordId;
+import com.medicdefense.backend.consultation.domain.model.commands.CreateLegalConsultationCommand;
+import com.medicdefense.backend.consultation.domain.model.valueobjects.MedicDefenseLegalConsultationRecordId;
 import com.medicdefense.backend.consultation.domain.model.valueobjects.ProfileId;
 import com.medicdefense.backend.shared.domain.model.aggregates.AuditableAbstractAggregateRoot;
 import jakarta.persistence.Column;
@@ -13,11 +13,11 @@ import java.sql.Date;
 
 @Getter
 @Entity
-public class Consultation extends AuditableAbstractAggregateRoot<Consultation> {
+public class LegalConsultation extends AuditableAbstractAggregateRoot<LegalConsultation> {
 
     @Embedded
     @Column(name = "medic_defense_consultation_id")
-    private final MedicDefenseConsultationRecordId medicDefenseConsultationRecordId;
+    private final MedicDefenseLegalConsultationRecordId medicDefenseLegalConsultationRecordId;
 
     private Date LastConsultation;
 
@@ -27,32 +27,32 @@ public class Consultation extends AuditableAbstractAggregateRoot<Consultation> {
     @Embedded
     private ProfileId lawyerId;
 
-    public Consultation() {
-        this.medicDefenseConsultationRecordId = new MedicDefenseConsultationRecordId();
+    public LegalConsultation() {
+        this.medicDefenseLegalConsultationRecordId = new MedicDefenseLegalConsultationRecordId();
         this.LastConsultation = new Date(System.currentTimeMillis());
     }
 
-    public Consultation(Date date, Long medicId, Long lawyerId) {
+    public LegalConsultation(Date date, Long medicId, Long lawyerId) {
         this();
         this.lawyerId = new ProfileId(lawyerId);
         this.medicId = new ProfileId(medicId);
         this.LastConsultation = date;
     }
 
-    public Consultation(CreateConsultationCommand command) {
+    public LegalConsultation(CreateLegalConsultationCommand command) {
         this();
         this.lawyerId = command.lawyerId();
         this.medicId = command.medicId();
-        this.LastConsultation = command.date();
+        this.LastConsultation = new Date(System.currentTimeMillis());
     }
 
-    public Consultation updateInformation(Date date) {
+    public LegalConsultation updateInformation(Date date) {
         this.LastConsultation = date;
         return this;
     }
 
-    public String getMedicDefenseConsultationRecordId() {
-        return this.medicDefenseConsultationRecordId.consultationRecordId();
+    public String getMedicDefenseLegalConsultationRecordId() {
+        return this.medicDefenseLegalConsultationRecordId.consultationRecordId();
     }
 
     public Long getMedicID() {

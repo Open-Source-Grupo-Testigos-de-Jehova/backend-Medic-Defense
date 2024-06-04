@@ -20,19 +20,19 @@ public class LegalIssue extends AuditableAbstractAggregateRoot<LegalIssue> {
     @Getter
     @ManyToOne
     @JoinColumn(name = "consultation_id")
-    private Consultation consultation;
+    private LegalConsultation legalConsultation;
 
     private LegalIssueStatus status;
 
     @Embedded
     private final Messages messages;
 
-    public LegalIssue(Consultation consultation, String title, String firstMessage) {
+    public LegalIssue(LegalConsultation legalConsultation, String title, String firstMessage) {
         this.status = LegalIssueStatus.OPEN;
         this.title = title;
         this.firstMessage = firstMessage;
         this.messages = new Messages();
-        addMessage(firstMessage, consultation.getLawyerID());
+        addMessage(firstMessage, legalConsultation.getLawyerID());
     }
 
     public LegalIssue() {
@@ -51,5 +51,13 @@ public class LegalIssue extends AuditableAbstractAggregateRoot<LegalIssue> {
 
     public boolean isClosed() {
         return this.status == LegalIssueStatus.CLOSED;
+    }
+
+    public Long getLegalConsultationId() {
+        return this.legalConsultation.getId();
+    }
+
+    public String getStatus() {
+        return this.status.name().toLowerCase();
     }
 }
