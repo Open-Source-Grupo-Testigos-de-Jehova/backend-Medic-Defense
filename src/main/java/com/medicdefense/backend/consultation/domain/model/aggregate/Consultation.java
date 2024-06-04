@@ -1,33 +1,53 @@
 package com.medicdefense.backend.consultation.domain.model.aggregate;
 
 import com.medicdefense.backend.consultation.domain.model.commands.CreateConsultationCommand;
+import com.medicdefense.backend.consultation.domain.model.valueobjects.ProfileId;
 import com.medicdefense.backend.shared.domain.model.aggregates.AuditableAbstractAggregateRoot;
+import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
 import lombok.Getter;
-import org.apache.logging.log4j.util.Strings;
+
+import java.sql.Date;
 
 @Getter
 @Entity
 public class Consultation extends AuditableAbstractAggregateRoot<Consultation> {
-    private String title;
-    private String description;
+
+    private Date LastConsultation;
+
+    @Embedded
+    private ProfileId medicID;
+
+    @Embedded
+    private ProfileId lawyerID;
 
     public Consultation() {
-        this.title = Strings.EMPTY;
-        this.description = Strings.EMPTY;
+        this.LastConsultation = new Date(System.currentTimeMillis());
     }
 
-    public Consultation(String title, String description) {
-        this();
-        this.title = title;
-        this.description = description;
+    public Consultation(Date date, Long medicID, Long lawyerID) {
+        this.lawyerID = new ProfileId(lawyerID);
+        this.medicID = new ProfileId(medicID);
+        this.LastConsultation = date;
     }
 
     public Consultation(CreateConsultationCommand command) {
         this();
-        this.title = command.title();
-        this.description = command.description();
+        this.lawyerID = command.lawyerId();
+        this.medicID = command.medicId();
+        this.LastConsultation = command.date();
     }
 
+    public Consultation updateInformation(Date date) {
+        this.LastConsultation = date;
+        return this;
+    }
 
+    public Long getMedicID() {
+        return this.medicID.profileId();
+    }
+
+    public Long getLawyerID() {
+        return this.lawyerID.profileId();
+    }
 }
