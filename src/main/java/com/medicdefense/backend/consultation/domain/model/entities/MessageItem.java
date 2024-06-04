@@ -27,22 +27,21 @@ public class MessageItem extends AuditableModel{
     @NotNull
     private String message;
 
-    @Embedded
-    @JoinColumn(name = "sender_id")
-    private ProfileId sender;
+    @NotNull
+    private Long senderId;
 
-    public MessageItem(Date date, LegalIssue legalIssue, String message, ProfileId sender) {
+    public MessageItem(Date date, LegalIssue legalIssue, String message, Long senderId) {
         this.date = date;
         this.legalIssue = legalIssue;
         this.message = message;
-        this.sender = sender;
+        this.senderId = senderId;
     }
 
     public MessageItem() {
         this.date = new Date(System.currentTimeMillis());
         this.legalIssue = null;
         this.message = "";
-        this.sender = new ProfileId(0L);
+        this.senderId = 0L;
     }
 
 }
