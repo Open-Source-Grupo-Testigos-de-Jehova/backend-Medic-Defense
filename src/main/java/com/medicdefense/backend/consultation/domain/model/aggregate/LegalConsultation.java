@@ -1,10 +1,8 @@
 package com.medicdefense.backend.consultation.domain.model.aggregate;
 
 import com.medicdefense.backend.consultation.domain.model.commands.CreateLegalConsultationCommand;
-import com.medicdefense.backend.consultation.domain.model.valueobjects.MedicDefenseLegalConsultationRecordId;
 import com.medicdefense.backend.consultation.domain.model.valueobjects.ProfileId;
 import com.medicdefense.backend.shared.domain.model.aggregates.AuditableAbstractAggregateRoot;
-import jakarta.persistence.Column;
 import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
 import lombok.Getter;
@@ -15,10 +13,6 @@ import java.sql.Date;
 @Entity
 public class LegalConsultation extends AuditableAbstractAggregateRoot<LegalConsultation> {
 
-    @Embedded
-    @Column(name = "medic_defense_consultation_id")
-    private final MedicDefenseLegalConsultationRecordId medicDefenseLegalConsultationRecordId;
-
     private Date LastConsultation;
 
     @Embedded
@@ -28,7 +22,6 @@ public class LegalConsultation extends AuditableAbstractAggregateRoot<LegalConsu
     private ProfileId lawyerId;
 
     public LegalConsultation() {
-        this.medicDefenseLegalConsultationRecordId = new MedicDefenseLegalConsultationRecordId();
         this.LastConsultation = new Date(System.currentTimeMillis());
     }
 
@@ -49,10 +42,6 @@ public class LegalConsultation extends AuditableAbstractAggregateRoot<LegalConsu
     public LegalConsultation updateInformation(Date date) {
         this.LastConsultation = date;
         return this;
-    }
-
-    public String getMedicDefenseLegalConsultationRecordId() {
-        return this.medicDefenseLegalConsultationRecordId.consultationRecordId();
     }
 
     public Long getMedicID() {
