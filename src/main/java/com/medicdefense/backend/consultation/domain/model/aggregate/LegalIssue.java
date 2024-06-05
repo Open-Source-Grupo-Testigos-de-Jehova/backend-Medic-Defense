@@ -1,5 +1,6 @@
 package com.medicdefense.backend.consultation.domain.model.aggregate;
 
+import com.medicdefense.backend.consultation.domain.model.commands.AskLegalIssueCommand;
 import com.medicdefense.backend.consultation.domain.model.valueobjects.LegalIssueStatus;
 import com.medicdefense.backend.consultation.domain.model.valueobjects.Messages;
 import com.medicdefense.backend.shared.domain.model.aggregates.AuditableAbstractAggregateRoot;
@@ -26,6 +27,15 @@ public class LegalIssue extends AuditableAbstractAggregateRoot<LegalIssue> {
 
     @Embedded
     private final Messages messages;
+
+    public LegalIssue(AskLegalIssueCommand command) {
+        this.status = LegalIssueStatus.OPEN;
+        this.title = command.title();
+        this.firstMessage = command.firstMessage();
+        this.legalConsultation = command.legalConsultationId();
+        this.messages = new Messages();
+        addMessage(firstMessage, command.legalConsultationId().getLawyerID());
+    }
 
     public LegalIssue(LegalConsultation legalConsultation, String title, String firstMessage) {
         this.status = LegalIssueStatus.OPEN;
@@ -59,5 +69,9 @@ public class LegalIssue extends AuditableAbstractAggregateRoot<LegalIssue> {
 
     public String getStatus() {
         return this.status.name().toLowerCase();
+    }
+
+    public Long getLawyerId() {
+        return this.legalConsultation.getLawyerID();
     }
 }

@@ -4,31 +4,31 @@ import com.medicdefense.backend.consultation.domain.model.aggregate.LegalConsult
 import com.medicdefense.backend.consultation.domain.model.commands.CreateLegalConsultationCommand;
 import com.medicdefense.backend.consultation.domain.model.commands.DeleteLegalConsultationCommand;
 import com.medicdefense.backend.consultation.domain.model.commands.UpdateLegalConsultationCommand;
-import com.medicdefense.backend.consultation.domain.services.ConsultationCommandService;
-import com.medicdefense.backend.consultation.infrastructure.persistence.jpa.repositories.ConsultationRepository;
+import com.medicdefense.backend.consultation.domain.services.LegalConsultationCommandService;
+import com.medicdefense.backend.consultation.infrastructure.persistence.jpa.repositories.LegalConsultationRepository;
 
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
 
 @Service
-public class ConsultationCommandServiceImpl implements ConsultationCommandService {
+public class LegalConsultationCommandServiceImpl implements LegalConsultationCommandService {
 
-    private final ConsultationRepository consultationRepository;
+    private final LegalConsultationRepository legalConsultationRepository;
 
 
-    public ConsultationCommandServiceImpl(ConsultationRepository consultationRepository) {
-        this.consultationRepository = consultationRepository;
+    public LegalConsultationCommandServiceImpl(LegalConsultationRepository legalConsultationRepository) {
+        this.legalConsultationRepository = legalConsultationRepository;
     }
 
     @Override
     public Long handle(CreateLegalConsultationCommand command) {
-        if(consultationRepository.existsByLawyerIdAndMedicId(command.lawyerId(), command.medicId())){
+        if(legalConsultationRepository.existsByLawyerIdAndMedicId(command.lawyerId(), command.medicId())){
             throw new IllegalArgumentException("Consultation with same id already exists");
         }
         var legalConsultation = new LegalConsultation(command);
         try {
-            consultationRepository.save(legalConsultation);
+            legalConsultationRepository.save(legalConsultation);
         } catch (Exception e) {
             throw new IllegalArgumentException("Error while saving consultation: " + e.getMessage());
         }
@@ -37,11 +37,11 @@ public class ConsultationCommandServiceImpl implements ConsultationCommandServic
 
     @Override
     public Optional<LegalConsultation> handle(UpdateLegalConsultationCommand command) {
-        var result = consultationRepository.findById(command.id());
+        var result = legalConsultationRepository.findById(command.id());
         if (result.isEmpty()) throw new IllegalArgumentException("Consultation does not exist");
         var consultationToUpdate = result.get();
         try {
-            var updatedConsultation = consultationRepository.save(consultationToUpdate.updateInformation(command.date()));
+            var updatedConsultation = legalConsultationRepository.save(consultationToUpdate.updateInformation(command.date()));
             return Optional.of(updatedConsultation);
         } catch (Exception e) {
             throw new IllegalArgumentException("Error while updating consultation: " + e.getMessage());
@@ -50,11 +50,11 @@ public class ConsultationCommandServiceImpl implements ConsultationCommandServic
 
     @Override
     public void handle(DeleteLegalConsultationCommand command) {
-        if (!consultationRepository.existsById(command.LegalConsultationId())) {
+        if (!legalConsultationRepository.existsById(command.LegalConsultationId())) {
             throw new IllegalArgumentException("Consultation does not exist");
         }
         try {
-            consultationRepository.deleteById(command.LegalConsultationId());
+            legalConsultationRepository.deleteById(command.LegalConsultationId());
         } catch (Exception e) {
             throw new IllegalArgumentException("Error while deleting consultation: " + e.getMessage());
         }

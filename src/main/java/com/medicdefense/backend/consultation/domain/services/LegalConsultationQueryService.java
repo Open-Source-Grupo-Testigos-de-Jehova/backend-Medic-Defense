@@ -7,10 +7,11 @@ import com.medicdefense.backend.consultation.domain.model.queries.GetLegalConsul
 import com.medicdefense.backend.consultation.domain.model.queries.GetLegalConsultationsByMedicIdQuery;
 
 import java.util.List;
+import java.util.Optional;
 
-public interface ConsultationQueryService {
-    List<LegalConsultation> getAllLegalConsultations(GetAllLegalConsultationsQuery query);
-    LegalConsultation getLegalConsultationByMedicDefenseRecordId(GetLegalConsultationsByIdQuery query);
-    List<LegalConsultation> getLegalConsultationsByLawyerId(GetLegalConsultationsByLawyerIdQuery query);
-    List<LegalConsultation> getLegalConsultationsByMedicId(GetLegalConsultationsByMedicIdQuery query);
+public interface LegalConsultationQueryService {
+    List<LegalConsultation> handle(GetAllLegalConsultationsQuery query);
+    Optional<LegalConsultation> handle(GetLegalConsultationsByIdQuery query);
+    List<LegalConsultation> handle(GetLegalConsultationsByLawyerIdQuery query);
+    List<LegalConsultation> handle(GetLegalConsultationsByMedicIdQuery query);
 }

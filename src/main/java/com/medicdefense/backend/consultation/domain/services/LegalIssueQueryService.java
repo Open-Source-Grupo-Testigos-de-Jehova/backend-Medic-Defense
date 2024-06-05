@@ -6,9 +6,10 @@ import com.medicdefense.backend.consultation.domain.model.queries.GetLegalIssueB
 import com.medicdefense.backend.consultation.domain.model.queries.GetLegalIssuesByConsultationIdQuery;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface LegalIssueQueryService {
-    List<LegalIssue> handle(GetLegalIssueByIdQuery query);
+    Optional<LegalIssue> handle(GetLegalIssueByIdQuery query);
     List<LegalIssue> handle(GetLegalIssuesByConsultationIdQuery query);
     List<LegalIssue> handle(GetAllLegalIssuesQuery query);
 }
