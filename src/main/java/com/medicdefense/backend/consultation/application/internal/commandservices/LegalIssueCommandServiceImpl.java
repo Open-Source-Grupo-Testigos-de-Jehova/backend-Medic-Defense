@@ -5,6 +5,7 @@ import com.medicdefense.backend.consultation.domain.model.commands.AskLegalIssue
 import com.medicdefense.backend.consultation.domain.model.commands.CloseLegalIssue;
 import com.medicdefense.backend.consultation.domain.model.commands.SendMessageCommand;
 import com.medicdefense.backend.consultation.domain.services.LegalIssueCommandService;
+import com.medicdefense.backend.consultation.infrastructure.persistence.jpa.repositories.LegalConsultationRepository;
 import com.medicdefense.backend.consultation.infrastructure.persistence.jpa.repositories.LegalIssueRepository;
 import org.springframework.stereotype.Service;
 
@@ -12,9 +13,11 @@ import org.springframework.stereotype.Service;
 public class LegalIssueCommandServiceImpl implements LegalIssueCommandService {
 
     private final LegalIssueRepository legalIssueRepository;
+    private final LegalConsultationRepository legalConsultationRepository;
 
-    public LegalIssueCommandServiceImpl(LegalIssueRepository legalIssueRepository) {
+    public LegalIssueCommandServiceImpl(LegalIssueRepository legalIssueRepository, LegalConsultationRepository legalConsultationRepository) {
         this.legalIssueRepository = legalIssueRepository;
+        this.legalConsultationRepository = legalConsultationRepository;
     }
 
     @Override
@@ -22,7 +25,7 @@ public class LegalIssueCommandServiceImpl implements LegalIssueCommandService {
         if(legalIssueRepository.existsByTitle(command.title())){
             throw new IllegalArgumentException("Legal Issue with same id already exists");
         }
-        var legalIssue = new LegalIssue(command);
+        var legalIssue = new LegalIssue(command, legalConsultationRepository.findById(command.legalConsultationId()).orElseThrow());
         try {
             legalIssueRepository.save(legalIssue);
         } catch (Exception e) {

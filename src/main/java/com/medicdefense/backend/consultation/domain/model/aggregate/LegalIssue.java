@@ -20,7 +20,7 @@ public class LegalIssue extends AuditableAbstractAggregateRoot<LegalIssue> {
 
     @Getter
     @ManyToOne
-    @JoinColumn(name = "consultation_id")
+    @JoinColumn(name = "legal_consultation_id")
     private LegalConsultation legalConsultation;
 
     private LegalIssueStatus status;
@@ -28,13 +28,13 @@ public class LegalIssue extends AuditableAbstractAggregateRoot<LegalIssue> {
     @Embedded
     private final Messages messages;
 
-    public LegalIssue(AskLegalIssueCommand command) {
+    public LegalIssue(AskLegalIssueCommand command, LegalConsultation legalConsultation) {
         this.status = LegalIssueStatus.OPEN;
         this.title = command.title();
+        this.legalConsultation = legalConsultation;
         this.firstMessage = command.firstMessage();
-        this.legalConsultation = command.legalConsultationId();
         this.messages = new Messages();
-        addMessage(firstMessage, command.legalConsultationId().getLawyerID());
+        addMessage(command.firstMessage(), legalConsultation.getLawyerID());
     }
 
     public LegalIssue(LegalConsultation legalConsultation, String title, String firstMessage) {
@@ -43,6 +43,7 @@ public class LegalIssue extends AuditableAbstractAggregateRoot<LegalIssue> {
         this.firstMessage = firstMessage;
         this.messages = new Messages();
         addMessage(firstMessage, legalConsultation.getLawyerID());
+        this.legalConsultation = new LegalConsultation();
     }
 
     public LegalIssue() {

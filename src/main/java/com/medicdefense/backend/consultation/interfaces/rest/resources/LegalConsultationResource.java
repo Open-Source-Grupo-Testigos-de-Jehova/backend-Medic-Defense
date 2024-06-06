@@ -1,4 +1,6 @@
 package com.medicdefense.backend.consultation.interfaces.rest.resources;
 
-public record LegalConsultationResource(Long legalConsultationId) {
+import java.sql.Date;
+
+public record LegalConsultationResource(Long legalConsultationId, Long medicId, Long lawyerId, Date lastConsultation) {
 }

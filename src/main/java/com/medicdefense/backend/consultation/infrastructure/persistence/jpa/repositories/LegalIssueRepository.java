@@ -11,6 +11,6 @@ import java.util.Optional;
 public interface LegalIssueRepository extends JpaRepository<LegalIssue, Long> {
     Optional<LegalIssue> findByTitle(String title);
     boolean existsByTitle(String title);
-    List<LegalIssue> findAllByLegalConsultationId(Long legalConsultationId);
+    List<LegalIssue> findAllByLegalConsultation_Id(Long legalConsultationId);
     boolean existsByTitleAndIdIsNot(String title, Long id);
 }

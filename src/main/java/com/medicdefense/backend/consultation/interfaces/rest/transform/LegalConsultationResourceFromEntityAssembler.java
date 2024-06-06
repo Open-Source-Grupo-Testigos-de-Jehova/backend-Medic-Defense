@@ -5,6 +5,6 @@ import com.medicdefense.backend.consultation.interfaces.rest.resources.LegalCons
 
 public class LegalConsultationResourceFromEntityAssembler {
     public static LegalConsultationResource toResourceFromEntity(LegalConsultation entity) {
-        return new LegalConsultationResource(entity.getId());
+        return new LegalConsultationResource(entity.getId(), entity.getMedicID(), entity.getLawyerID(), entity.getLastConsultation());
     }
 }

@@ -27,7 +27,7 @@ public class LegalIssueQueryServiceImpl implements LegalIssueQueryService {
 
     @Override
     public List<LegalIssue> handle(GetLegalIssuesByConsultationIdQuery query) {
-        return legalIssueRepository.findAllByLegalConsultationId(query.consultationId());
+        return legalIssueRepository.findAllByLegalConsultation_Id(query.consultationId());
     }
 
     @Override
