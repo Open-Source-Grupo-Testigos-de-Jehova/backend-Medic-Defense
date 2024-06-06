@@ -1,9 +1,8 @@
 package com.medicdefense.backend.consultation.application.internal.queryservices;
 
 import com.medicdefense.backend.consultation.domain.model.aggregate.LegalIssue;
-import com.medicdefense.backend.consultation.domain.model.queries.GetAllLegalIssuesQuery;
-import com.medicdefense.backend.consultation.domain.model.queries.GetLegalIssueByIdQuery;
-import com.medicdefense.backend.consultation.domain.model.queries.GetLegalIssuesByConsultationIdQuery;
+import com.medicdefense.backend.consultation.domain.model.entities.MessageItem;
+import com.medicdefense.backend.consultation.domain.model.queries.*;
 import com.medicdefense.backend.consultation.domain.services.LegalIssueQueryService;
 import com.medicdefense.backend.consultation.infrastructure.persistence.jpa.repositories.LegalIssueRepository;
 import org.springframework.stereotype.Service;
@@ -33,5 +32,20 @@ public class LegalIssueQueryServiceImpl implements LegalIssueQueryService {
     @Override
     public List<LegalIssue> handle(GetAllLegalIssuesQuery query) {
         return legalIssueRepository.findAll();
+    }
+
+    @Override
+    public Optional<List<MessageItem>> handle(GetMessageItemsByIdQuery query) {
+        return legalIssueRepository.findById(query.legalIssueId()).map(legalIssue -> legalIssue.getMessages().getMessageItems());
+    }
+
+    @Override
+    public Optional<MessageItem> handle(GetMessageItemByLegalIssueIdAndMessageIdQuery query) {
+        return legalIssueRepository.findById(query.legalIssueId()).map(legalIssue -> legalIssue.getMessages().getMessageItemById(query.messageItemId()));
+    }
+
+    @Override
+    public Optional<MessageItem> handle(GetLastMessageItemByLegalIssueIdQuery query) {
+        return legalIssueRepository.findById(query.legalIssueId()).map(legalIssue -> legalIssue.getMessages().getLastMessageItem());
     }
 }
