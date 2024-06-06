@@ -3,6 +3,7 @@ package com.medicdefense.backend.payment.application.internal.queryservices;
 import com.medicdefense.backend.payment.domain.model.aggregates.Payment;
 import com.medicdefense.backend.payment.domain.model.queries.GetAllPaymentsQuery;
 import com.medicdefense.backend.payment.domain.model.queries.GetPaymentByIdQuery;
+import com.medicdefense.backend.payment.domain.services.PaymentQueryService;
 import com.medicdefense.backend.payment.infrastructure.persistence.jpa.PaymentRepository;
 import org.springframework.stereotype.Service;
 
@@ -10,7 +11,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-public class PaymentQueryServiceImpl implements PaymentQuerySerivce {
+public class PaymentQueryServiceImpl implements PaymentQueryService {
 
     private final PaymentRepository paymentRepository;
 
