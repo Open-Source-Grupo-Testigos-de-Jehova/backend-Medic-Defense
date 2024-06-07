@@ -13,7 +13,7 @@ import java.util.List;
 @Embeddable
 public class Messages {
 
-    @OneToMany(mappedBy = "message", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "legalIssue", cascade = CascadeType.ALL)
     private List<MessageItem> messageItemList;
 
     public Messages() {
@@ -39,6 +39,19 @@ public class Messages {
             System.out.println("Message list is empty");
             return null;
         }
+    }
+
+    public List<MessageItem> getMessageItems() {
+        return messageItemList;
+    }
+
+    public MessageItem getMessageItemById(Long id) {
+        for (MessageItem messageItem : messageItemList) {
+            if (messageItem.getId().equals(id)) {
+                return messageItem;
+            }
+        }
+        return null;
     }
 
     public boolean hasMessages() {

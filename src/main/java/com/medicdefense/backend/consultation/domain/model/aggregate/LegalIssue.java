@@ -1,5 +1,6 @@
 package com.medicdefense.backend.consultation.domain.model.aggregate;
 
+import com.medicdefense.backend.consultation.domain.model.commands.AskLegalIssueCommand;
 import com.medicdefense.backend.consultation.domain.model.valueobjects.LegalIssueStatus;
 import com.medicdefense.backend.consultation.domain.model.valueobjects.Messages;
 import com.medicdefense.backend.shared.domain.model.aggregates.AuditableAbstractAggregateRoot;
@@ -19,7 +20,7 @@ public class LegalIssue extends AuditableAbstractAggregateRoot<LegalIssue> {
 
     @Getter
     @ManyToOne
-    @JoinColumn(name = "consultation_id")
+    @JoinColumn(name = "legal_consultation_id")
     private LegalConsultation legalConsultation;
 
     private LegalIssueStatus status;
@@ -27,12 +28,22 @@ public class LegalIssue extends AuditableAbstractAggregateRoot<LegalIssue> {
     @Embedded
     private final Messages messages;
 
+    public LegalIssue(AskLegalIssueCommand command, LegalConsultation legalConsultation) {
+        this.status = LegalIssueStatus.OPEN;
+        this.title = command.title();
+        this.legalConsultation = legalConsultation;
+        this.firstMessage = command.firstMessage();
+        this.messages = new Messages();
+        addMessage(command.firstMessage(), legalConsultation.getLawyerID());
+    }
+
     public LegalIssue(LegalConsultation legalConsultation, String title, String firstMessage) {
         this.status = LegalIssueStatus.OPEN;
         this.title = title;
         this.firstMessage = firstMessage;
         this.messages = new Messages();
         addMessage(firstMessage, legalConsultation.getLawyerID());
+        this.legalConsultation = new LegalConsultation();
     }
 
     public LegalIssue() {
@@ -59,5 +70,9 @@ public class LegalIssue extends AuditableAbstractAggregateRoot<LegalIssue> {
 
     public String getStatus() {
         return this.status.name().toLowerCase();
+    }
+
+    public Long getLawyerId() {
+        return this.legalConsultation.getLawyerID();
     }
 }

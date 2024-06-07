@@ -7,7 +7,7 @@ import com.medicdefense.backend.consultation.domain.model.commands.UpdateLegalCo
 
 import java.util.Optional;
 
-public interface ConsultationCommandService {
+public interface LegalConsultationCommandService {
     Long handle(CreateLegalConsultationCommand command);
     Optional<LegalConsultation> handle(UpdateLegalConsultationCommand command);
     void handle(DeleteLegalConsultationCommand command);

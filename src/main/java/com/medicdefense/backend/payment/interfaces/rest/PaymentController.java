@@ -1,5 +1,7 @@
 package com.medicdefense.backend.payment.interfaces.rest;
 
+import com.medicdefense.backend.payment.application.internal.commandservices.PaymentCommandServiceImpl;
+import com.medicdefense.backend.payment.application.internal.queryservices.PaymentQueryServiceImpl;
 import com.medicdefense.backend.payment.domain.model.aggregates.Payment;
 import com.medicdefense.backend.payment.domain.model.queries.GetAllPaymentsByConsultationIdQuery;
 import com.medicdefense.backend.payment.domain.model.queries.GetPaymentByIdQuery;

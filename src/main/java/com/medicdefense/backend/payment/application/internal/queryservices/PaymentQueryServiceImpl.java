@@ -12,6 +12,7 @@ import java.util.Optional;
 
 @Service
 public class PaymentQueryServiceImpl implements PaymentQueryService {
+
     private final PaymentRepository paymentRepository;
 
     public PaymentQueryServiceImpl(PaymentRepository paymentRepository) {
