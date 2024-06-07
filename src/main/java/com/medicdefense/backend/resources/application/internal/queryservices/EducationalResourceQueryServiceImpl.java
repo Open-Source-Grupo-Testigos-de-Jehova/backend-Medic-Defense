@@ -3,7 +3,7 @@ package com.medicdefense.backend.resources.application.internal.queryservices;
 import com.medicdefense.backend.resources.domain.model.aggregates.EducationalResource;
 import com.medicdefense.backend.resources.domain.model.queries.*;
 import com.medicdefense.backend.resources.domain.services.EducationalResourceQueryService;
-import com.medicdefense.backend.resources.infraestructure.persistence.jpa.EducationalResourceRepository;
+import com.medicdefense.backend.resources.infrastructure.persistence.jpa.EducationalResourceRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;

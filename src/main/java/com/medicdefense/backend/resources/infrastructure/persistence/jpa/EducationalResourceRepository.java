@@ -1,4 +1,4 @@
-package com.medicdefense.backend.resources.infraestructure.persistence.jpa;
+package com.medicdefense.backend.resources.infrastructure.persistence.jpa;
 
 
 import com.medicdefense.backend.resources.domain.model.aggregates.EducationalResource;
@@ -13,5 +13,4 @@ public interface EducationalResourceRepository extends JpaRepository<Educational
     List<EducationalResource> findByContentType(String contentType);
     List<EducationalResource> findByAuthor(String author);
     Optional<EducationalResource> findById(Long id);
-    List<EducationalResource> findByAuthorAndContentType(String author, String contentType);
 }

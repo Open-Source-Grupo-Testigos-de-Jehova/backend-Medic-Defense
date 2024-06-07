@@ -1,9 +1,8 @@
 package com.medicdefense.backend.resources.interfaces.rest;
 
 import com.medicdefense.backend.resources.domain.model.aggregates.EducationalResource;
-import com.medicdefense.backend.resources.domain.model.queries.GetAllEducationalResourcesQuery;
-import com.medicdefense.backend.resources.domain.model.queries.GetEducationalResourceByIdQuery;
-import com.medicdefense.backend.resources.domain.model.queries.GetEducationalResourcesByTitleQuery;
+import com.medicdefense.backend.resources.domain.model.queries.*;
+import com.medicdefense.backend.resources.domain.model.queries.GetEducationalResourcesByContentTypeQuery;
 import com.medicdefense.backend.resources.domain.services.EducationalResourceCommandService;
 import com.medicdefense.backend.resources.domain.services.EducationalResourceQueryService;
 import com.medicdefense.backend.resources.interfaces.rest.resources.CreateEducationalResourceResource;
@@ -14,7 +13,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 
 import static org.springframework.http.HttpStatus.CREATED;
@@ -32,11 +30,10 @@ public class EducationalResourceController {
     }
 
     @PostMapping
-    public ResponseEntity<EducationalResourceResource>
-    createEducationalResource(@RequestBody CreateEducationalResourceResource resource) {
+    public ResponseEntity<EducationalResourceResource> createEducationalResource(
+            @RequestBody CreateEducationalResourceResource resource) {
         Optional<EducationalResource> educationalResource = educationalResourceCommandService
-                .handle(CreateEducationalResourceCommandFromResourceAssembler
-                        .toCommandFromResource(resource));
+                .handle(CreateEducationalResourceCommandFromResourceAssembler.toCommandFromResource(resource));
         return educationalResource.map(resourceCreated -> new ResponseEntity<>(
                         EducationalResourceResourceFromEntityAssembler.toResourceFromEntity(resourceCreated), CREATED))
                 .orElseGet(() -> ResponseEntity.badRequest().build());
@@ -50,8 +47,23 @@ public class EducationalResourceController {
                 .toResourceFromEntity(resourceFound))).orElseGet(() -> ResponseEntity.notFound().build());
     }
 
-    private ResponseEntity<List<EducationalResourceResource>>
-    getAllEducationalResourcesByTitle(String title) {
+    @GetMapping
+    public ResponseEntity<List<EducationalResourceResource>> getEducationalResources(
+            @RequestParam(required = false) String title,
+            @RequestParam(required = false) String content,
+            @RequestParam(required = false) String author) {
+        if (title != null) {
+            return getAllEducationalResourcesByTitle(title);
+        } else if (content != null) {
+            return getAllEducationalResourcesByContent(content);
+        } else if (author != null) {
+            return getAllEducationalResourcesByAuthor(author);
+        } else {
+            return getAllEducationalResources();
+        }
+    }
+
+    private ResponseEntity<List<EducationalResourceResource>> getAllEducationalResourcesByTitle(String title) {
         var query = new GetEducationalResourcesByTitleQuery(title);
         var educationalResources = educationalResourceQueryService.handle(query);
         if (educationalResources.isEmpty()) return ResponseEntity.notFound().build();
@@ -60,12 +72,28 @@ public class EducationalResourceController {
         return ResponseEntity.ok(educationalResourceResources);
     }
 
-    @GetMapping
-    public ResponseEntity<?> getEducationalResourcesWithParameters(@RequestParam Map<String, String> params) {
-        if (params.containsKey("title")) {
-            return getAllEducationalResourcesByTitle(params.get("title"));
-        } else {
-            return ResponseEntity.badRequest().build();
-        }
+    private ResponseEntity<List<EducationalResourceResource>> getAllEducationalResourcesByContent(String content) {
+        var query = new GetEducationalResourcesByContentTypeQuery(content);
+        var educationalResources = educationalResourceQueryService.handle(query);
+        if (educationalResources.isEmpty()) return ResponseEntity.notFound().build();
+        var educationalResourceResources = educationalResources.stream().map(
+                EducationalResourceResourceFromEntityAssembler::toResourceFromEntity).toList();
+        return ResponseEntity.ok(educationalResourceResources);
+    }
+
+    private ResponseEntity<List<EducationalResourceResource>> getAllEducationalResourcesByAuthor(String author) {
+        var query = new GetEducationalResourcesByAuthorQuery(author);
+        var educationalResources = educationalResourceQueryService.handle(query);
+        if (educationalResources.isEmpty()) return ResponseEntity.notFound().build();
+        var educationalResourceResources = educationalResources.stream().map(
+                EducationalResourceResourceFromEntityAssembler::toResourceFromEntity).toList();
+        return ResponseEntity.ok(educationalResourceResources);
+    }
+
+    private ResponseEntity<List<EducationalResourceResource>> getAllEducationalResources() {
+        var educationalResources = educationalResourceQueryService.handle(new GetAllEducationalResourcesQuery());
+        var educationalResourceResources = educationalResources.stream().map(
+                EducationalResourceResourceFromEntityAssembler::toResourceFromEntity).toList();
+        return ResponseEntity.ok(educationalResourceResources);
     }
 }
