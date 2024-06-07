@@ -7,12 +7,6 @@ import com.medicdefense.backend.payment.interfaces.rest.resources.CreatePaymentR
 public class CreatePaymentCommandFromResourceAssembler {
 
     public static CreatePaymentCommand toCommandFromResource(CreatePaymentResource resource) {
-        return new CreatePaymentCommand(
-                resource.date(),
-                resource.legalIssue(),
-                resource.amount(),
-                resource.method(),
-                resource.consultationId()
-        );
+        return new CreatePaymentCommand( resource.consultationId(), resource.amount(),resource.method());
     }
 }

@@ -6,14 +6,10 @@ package com.medicdefense.backend.payment.domain.model.queries;
  * @param id The identifier of the Payment.
  * @throws IllegalArgumentException if the identifier is less than or equal to 0.
  */
-public record GetPaymentByIdQuery(int id) {
+public record GetPaymentByIdQuery(Long id) {
     public GetPaymentByIdQuery {
-        if (id <= 0) {
-            throw new IllegalArgumentException("The identifier must be greater than 0");
+        if (id == null) {
+            throw new IllegalArgumentException("ID cannot be null");
         }
-    }
-
-    public Integer paymentId() {
-        return id;
     }
 }

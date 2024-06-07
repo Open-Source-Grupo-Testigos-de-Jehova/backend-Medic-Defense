@@ -1,4 +1,4 @@
-package com.medicdefense.backend.payment.domain.model.valueobjects;
+package com.medicdefense.backend.payment.domain.model.valueobjets;
 
 import jakarta.persistence.Embeddable;
 

@@ -1,56 +1,42 @@
 package com.medicdefense.backend.payment.domain.model.aggregates;
 
+import com.medicdefense.backend.payment.domain.model.commands.CreatePaymentCommand;
 import jakarta.persistence.*;
+import lombok.Getter;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.domain.AbstractAggregateRoot;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+
 import java.util.Date;
 
+@Getter
 @Entity
-public class Payment {
+@EntityListeners(AuditingEntityListener.class)
+public class Payment  extends AbstractAggregateRoot<Payment> {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date date;
+    @CreatedDate
+    @Column(nullable = false, updatable = false)
+    private Date createdAt;
 
-    private String legalIssue;
+    @Column(nullable = false)
     private float amount;
+
+    @Column(nullable = false)
     private String method;
 
     @ManyToOne
-    @JoinColumn(name = "consultation_id")
+    @JoinColumn(name = "consultation_id" ,nullable = false)
     private Consultation consultation;
 
-    public Payment() {}
+    public Payment() {
 
-    public Payment(float amount, String method, Consultation consultation) {
-        this.date = new Date();
-        this.legalIssue = consultation.getLegalIssue();
-        this.amount = amount;
-        this.method = method;
+    }
+    public Payment(CreatePaymentCommand command, Consultation consultation) {
         this.consultation = consultation;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public Date getDate() {
-        return date;
-    }
-
-    public String getLegalIssue() {
-        return legalIssue;
-    }
-
-    public float getAmount() {
-        return amount;
-    }
-
-    public String getMethod() {
-        return method;
-    }
-
-    public Consultation getConsultation() {
-        return consultation;
+        this.amount = command.amount();
+        this.method = command.method();
     }
 }

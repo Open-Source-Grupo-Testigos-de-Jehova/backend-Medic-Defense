@@ -19,6 +19,6 @@ public class ConsultationQueryServiceImpl implements ConsultationQueryService {
 
     @Override
     public Optional<Consultation> handle(GetConsultationByIdQuery query) {
-        return consultationRepository.findById(query.id());
+        return consultationRepository.findById((long) query.id());
     }
 }
