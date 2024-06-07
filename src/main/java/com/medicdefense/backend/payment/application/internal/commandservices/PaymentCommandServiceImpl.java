@@ -7,7 +7,6 @@ import com.medicdefense.backend.payment.infrastructure.persistence.jpa.Consultat
 import com.medicdefense.backend.payment.infrastructure.persistence.jpa.PaymentRepository;
 import com.medicdefense.backend.payment.domain.model.commands.CreatePaymentCommand;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
 
@@ -23,12 +22,11 @@ public class PaymentCommandServiceImpl implements PaymentCommandService {
     }
 
     @Override
-    @Transactional
     public Optional<Payment> handle(CreatePaymentCommand command) {
         Consultation consultation = consultationRepository.findById(command.consultationId())
-                .orElseThrow(() -> new IllegalArgumentException("Consulta no encontrada"));
-
-        Payment payment = new Payment(command.amount(), command.method(), consultation);
-        return Optional.of(paymentRepository.save(payment));
+                .orElseThrow(() -> new IllegalArgumentException("Invalid consultation id"));
+        Payment payment = new Payment(command, consultation);
+        Payment createdPayment = paymentRepository.save(payment);
+        return Optional.of(createdPayment);
     }
 }

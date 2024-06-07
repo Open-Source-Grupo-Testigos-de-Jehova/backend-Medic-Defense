@@ -1,10 +1,13 @@
 package com.medicdefense.backend.payment.domain.model.aggregates;
 
 import jakarta.persistence.*;
+import lombok.Getter;
 
 import java.util.Date;
+import java.util.List;
 
-@Entity
+@Getter
+@Entity(name = "ConsultationPayment")
 public class Consultation {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -12,20 +15,21 @@ public class Consultation {
 
     private String legalIssue;
 
-    public Consultation(Date date, String s) {
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date date;
 
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date updateAdd;
 
+    @OneToMany(mappedBy = "consultation")
+    private List<Payment> consultationPayments;
+
+    public Consultation(Date date, String legalIssue) {
+        this.date = date;
+        this.legalIssue = legalIssue;
     }
 
-    public Consultation() {
-
+    protected Consultation() {
     }
 
-    public Long getId() {
-        return id;
-    }
-
-    public String getLegalIssue() {
-        return legalIssue;
-    }
 }

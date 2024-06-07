@@ -2,22 +2,16 @@ package com.medicdefense.backend.payment.interfaces.rest.resources;
 
 import java.util.Date;
 
-public record CreatePaymentResource(Date date, String legalIssue, float amount, String method, int consultationId) {
+public record CreatePaymentResource( Long consultationId,String method,float amount) {
     public CreatePaymentResource {
-        if (date == null) {
-            throw new IllegalArgumentException("Date cannot be null");
-        }
-        if (legalIssue == null) {
-            throw new IllegalArgumentException("Legal issue cannot be null");
+        if (amount <= 0) {
+            throw new IllegalArgumentException("The amount must be greater than 0");
         }
         if (method == null || method.isBlank()) {
-            throw new IllegalArgumentException("Payment method cannot be null or empty");
+            throw new IllegalArgumentException("The method cannot be null or empty");
         }
-        if (amount <= 0) {
-            throw new IllegalArgumentException("Payment amount must be greater than 0");
-        }
-        if (consultationId <= 0) {
-            throw new IllegalArgumentException("Consultation ID must be greater than 0");
+        if (consultationId == null) {
+            throw new IllegalArgumentException("The consultation id cannot be null");
         }
     }
 }

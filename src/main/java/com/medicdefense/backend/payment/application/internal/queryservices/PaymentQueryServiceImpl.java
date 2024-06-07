@@ -1,7 +1,7 @@
 package com.medicdefense.backend.payment.application.internal.queryservices;
 
 import com.medicdefense.backend.payment.domain.model.aggregates.Payment;
-import com.medicdefense.backend.payment.domain.model.queries.GetAllPaymentsQuery;
+import com.medicdefense.backend.payment.domain.model.queries.GetAllPaymentsByConsultationIdQuery;
 import com.medicdefense.backend.payment.domain.model.queries.GetPaymentByIdQuery;
 import com.medicdefense.backend.payment.domain.services.PaymentQueryService;
 import com.medicdefense.backend.payment.infrastructure.persistence.jpa.PaymentRepository;
@@ -20,16 +20,12 @@ public class PaymentQueryServiceImpl implements PaymentQueryService {
     }
 
     @Override
-    public Optional<Payment> handle(GetPaymentByIdQuery query) {
-        return paymentRepository.findById(query.paymentId());
+    public Optional<Payment>handle(GetPaymentByIdQuery  query) {
+        return paymentRepository.findById(query.id());
     }
 
     @Override
-    public List<Payment> handle(GetAllPaymentsQuery query) {
-        return paymentRepository.findAll();
-    }
-
-    public List<Payment> handleGetAllPayments() {
-        return paymentRepository.findAll();
+    public List<Payment> handle(GetAllPaymentsByConsultationIdQuery query){
+        return paymentRepository.findByConsultationId(query.consultationId());
     }
 }

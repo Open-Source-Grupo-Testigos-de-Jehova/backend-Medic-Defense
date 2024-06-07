@@ -6,13 +6,7 @@ import com.medicdefense.backend.payment.interfaces.rest.resources.PaymentResourc
 public class PaymentResourceFromEntityAssembler {
 
     public static PaymentResource toResourceFromEntity(Payment entity) {
-        return new PaymentResource(
-                entity.getId(),
-                entity.getDate(),
-                entity.getLegalIssue(),
-                entity.getAmount(),
-                entity.getMethod(),
-                entity.getConsultation().getId()
-        );
+        return new PaymentResource(entity.getId(), entity.getCreatedAt(), entity.getAmount()
+                , entity.getMethod(), entity.getConsultation().getId());
     }
 }
