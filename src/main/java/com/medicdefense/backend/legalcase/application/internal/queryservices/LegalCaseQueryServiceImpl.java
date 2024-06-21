@@ -34,6 +34,7 @@ public class LegalCaseQueryServiceImpl implements LegalCaseQueryService {
     public List<LegalCase> handle(GetLegalCaseByStatusQuery query) {
         return legalCaseRepository.findByStatus(query.status());
     }
+
     @Override
     public List<LegalCase> handle(GetAllLegalCasesQuery query) {
         return legalCaseRepository.findAll();
