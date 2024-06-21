@@ -6,6 +6,11 @@ import com.medicdefense.backend.legalcase.interfaces.rest.resources.CreateLegalC
 
 public class CreateLegalCaseCommandFromResourceAssembler {
     public static CreateLegalCaseCommand toCommandFromResource(CreateLegalCaseResource resource){
-        return new CreateLegalCaseCommand(resource.caseNumber(), resource.description(), resource.status());
+        return new CreateLegalCaseCommand
+                (
+                        resource.description(),
+                        resource.lawyerId(),
+                        resource.clientId()
+                );
     }
 }

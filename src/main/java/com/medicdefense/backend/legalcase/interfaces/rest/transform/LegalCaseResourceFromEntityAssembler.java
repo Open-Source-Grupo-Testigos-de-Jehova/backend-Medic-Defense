@@ -6,6 +6,13 @@ import com.medicdefense.backend.legalcase.interfaces.rest.resources.LegalCaseRes
 
 public class LegalCaseResourceFromEntityAssembler {
     public static LegalCaseResource toResourceFromEntity(LegalCase entity){
-        return new LegalCaseResource(entity.getId(), entity.getCaseNumber(), entity.getDescription(), entity.getStatus());
+        return new LegalCaseResource
+                (
+                        entity.getId(),
+                        entity.getDescription(),
+                        entity.getStatus().name(),
+                        entity.getLawyerRecordId(),
+                        entity.getMedicRecordId()
+                );
     }
 }

@@ -1,15 +1,15 @@
 package com.medicdefense.backend.legalcase.domain.model.commands;
 
-public record CreateLegalCaseCommand(String caseNumber, String description, String status) {
+public record CreateLegalCaseCommand(String description, String lawyerId, String clientId) {
     public CreateLegalCaseCommand {
-        if (caseNumber == null || caseNumber.isBlank()) {
-            throw new IllegalArgumentException("caseNumber cannot be null or empty");
-        }
         if (description == null || description.isBlank()) {
             throw new IllegalArgumentException("description cannot be null or empty");
         }
-        if (status == null || status.isBlank()) {
-            throw new IllegalArgumentException("status cannot be null or empty");
+        if (lawyerId == null || lawyerId.isBlank()) {
+            throw new IllegalArgumentException("lawyerId cannot be null or empty");
+        }
+        if (clientId == null || clientId.isBlank()) {
+            throw new IllegalArgumentException("clientId cannot be null or empty");
         }
     }
 }

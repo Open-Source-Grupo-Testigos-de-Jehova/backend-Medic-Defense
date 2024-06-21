@@ -3,6 +3,7 @@ package com.medicdefense.backend.legalcase.interfaces.rest;
 import com.medicdefense.backend.legalcase.application.internal.commandservices.LegalCaseCommandServiceImpl;
 import com.medicdefense.backend.legalcase.application.internal.queryservices.LegalCaseQueryServiceImpl;
 import com.medicdefense.backend.legalcase.domain.model.aggregates.LegalCase;
+import com.medicdefense.backend.legalcase.domain.model.commands.CloseLegalCaseCommand;
 import com.medicdefense.backend.legalcase.domain.model.commands.CreateLegalCaseCommand;
 import com.medicdefense.backend.legalcase.domain.model.queries.GetAllLegalCasesQuery;
 import com.medicdefense.backend.legalcase.domain.model.queries.GetLegalCaseByDescriptionQuery;
@@ -12,6 +13,7 @@ import com.medicdefense.backend.legalcase.interfaces.rest.resources.CreateLegalC
 import com.medicdefense.backend.legalcase.interfaces.rest.resources.LegalCaseResource;
 import com.medicdefense.backend.legalcase.interfaces.rest.transform.CreateLegalCaseCommandFromResourceAssembler;
 import com.medicdefense.backend.legalcase.interfaces.rest.transform.LegalCaseResourceFromEntityAssembler;
+import com.medicdefense.backend.shared.interfaces.rest.resources.MessageResource;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -30,6 +32,13 @@ public class LegalCaseController {
         this.queryService = queryService;
     }
 
+    @PostMapping("{id}/close")
+    public ResponseEntity<MessageResource> closeLegalCase(@PathVariable Long id) {
+        CloseLegalCaseCommand command = new CloseLegalCaseCommand(id);
+        commandService.handle(command);
+        return ResponseEntity.ok(new MessageResource("Closed Legal Case ID: " + id));
+    }
+
     @PostMapping
     public ResponseEntity<LegalCaseResource> createLegalCase(@RequestBody CreateLegalCaseResource resource) {
         CreateLegalCaseCommand command = CreateLegalCaseCommandFromResourceAssembler.toCommandFromResource(resource);
@@ -43,15 +52,6 @@ public class LegalCaseController {
         LegalCase legalCase = queryService.handle(new GetLegalCaseByIdQuery(id)).orElseThrow();
         LegalCaseResource legalCaseResource = LegalCaseResourceFromEntityAssembler.toResourceFromEntity(legalCase);
         return ResponseEntity.ok(legalCaseResource);
-    }
-
-    @GetMapping("/description/{description}")
-    public ResponseEntity<List<LegalCaseResource>> getLegalCasesByDescription(@PathVariable String description) {
-        List<LegalCase> legalCases = queryService.handle(new GetLegalCaseByDescriptionQuery(description));
-        List<LegalCaseResource> legalCaseResources = legalCases.stream()
-                .map(LegalCaseResourceFromEntityAssembler::toResourceFromEntity)
-                .collect(Collectors.toList());
-        return ResponseEntity.ok(legalCaseResources);
     }
 
     @GetMapping("/status/{status}")

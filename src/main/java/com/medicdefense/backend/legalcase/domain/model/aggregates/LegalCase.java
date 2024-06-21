@@ -1,6 +1,7 @@
 package com.medicdefense.backend.legalcase.domain.model.aggregates;
 
 import com.medicdefense.backend.legalcase.domain.model.commands.CreateLegalCaseCommand;
+import com.medicdefense.backend.legalcase.domain.model.valueobjects.LegalCaseStatus;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
@@ -21,13 +22,10 @@ public class LegalCase extends AbstractAggregateRoot<LegalCase> {
     private Long id;
 
     @Column(nullable = false)
-    private String caseNumber;
-
-    @Column(nullable = false)
     private String description;
 
     @Column(nullable = false)
-    private String status;
+    private LegalCaseStatus status;
 
     @NotNull
     private String medicRecordId;
@@ -38,15 +36,22 @@ public class LegalCase extends AbstractAggregateRoot<LegalCase> {
     protected LegalCase() {
     }
 
-    public LegalCase(String caseNumber, String description, String status) {
-        this.caseNumber = caseNumber;
+    public LegalCase(String description, String medicRecordId, String lawyerRecordId) {
         this.description = description;
-        this.status = status;
+        this.status = LegalCaseStatus.OPEN;
+        this.medicRecordId = medicRecordId;
+        this.lawyerRecordId = lawyerRecordId;
     }
 
     public LegalCase(CreateLegalCaseCommand command) {
-        this.caseNumber = command.caseNumber();
         this.description = command.description();
-        this.status = command.status();
+        this.status = LegalCaseStatus.OPEN;
+        this.medicRecordId = command.clientId();
+        this.lawyerRecordId = command.lawyerId();
     }
+
+    public void close() {
+        this.status = LegalCaseStatus.CLOSED;
+    }
+
 }
