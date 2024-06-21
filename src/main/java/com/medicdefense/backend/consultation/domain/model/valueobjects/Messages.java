@@ -25,7 +25,7 @@ public class Messages {
         this.messageItemList.add(messageItem);
     }
 
-    public void addMessageItems(LegalIssue legalIssue, String message, Long senderId) {
+    public void addMessageItems(LegalIssue legalIssue, String message, String senderId) {
         System.out.println("Adding message item");
         MessageItem messageItem = new MessageItem(legalIssue, message, senderId);
         System.out.println("Message ID " + messageItem.getId());

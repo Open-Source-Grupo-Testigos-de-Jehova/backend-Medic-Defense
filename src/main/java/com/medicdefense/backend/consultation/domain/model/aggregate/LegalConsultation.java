@@ -1,16 +1,12 @@
 package com.medicdefense.backend.consultation.domain.model.aggregate;
 
 import com.medicdefense.backend.consultation.domain.model.commands.CreateLegalConsultationCommand;
-import com.medicdefense.backend.consultation.domain.model.valueobjects.ProfileId;
+import com.medicdefense.backend.consultation.domain.model.valueobjects.MedicDefenseId;
 import com.medicdefense.backend.shared.domain.model.aggregates.AuditableAbstractAggregateRoot;
 import jakarta.persistence.*;
 import lombok.Getter;
-import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.UpdateTimestamp;
 
 import java.sql.Date;
-import java.time.LocalDateTime;
-import java.util.List;
 
 @Getter
 @Entity
@@ -20,24 +16,24 @@ public class LegalConsultation extends AuditableAbstractAggregateRoot<LegalConsu
 
     @Embedded
     @AttributeOverrides({
-            @AttributeOverride(name = "profileId", column = @Column(name = "medic_profile_id"))
+            @AttributeOverride(name = "medicDefenseId", column = @Column(name = "medic_profile_id"))
     })
-    private ProfileId medicId;
+    private MedicDefenseId medicId;
 
     @Embedded
     @AttributeOverrides({
-            @AttributeOverride(name = "profileId", column = @Column(name = "lawyer_profile_id"))
+            @AttributeOverride(name = "medicDefenseId", column = @Column(name = "lawyer_profile_id"))
     })
-    private ProfileId lawyerId;
+    private MedicDefenseId lawyerId;
 
     public LegalConsultation() {
         this.lastConsultation = new Date(System.currentTimeMillis());
     }
 
-    public LegalConsultation(Long medicId, Long lawyerId) {
+    public LegalConsultation(String medicId, String lawyerId) {
         this();
-        this.lawyerId = new ProfileId(lawyerId);
-        this.medicId = new ProfileId(medicId);
+        this.lawyerId = new MedicDefenseId(lawyerId);
+        this.medicId = new MedicDefenseId(medicId);
         this.lastConsultation = new Date(System.currentTimeMillis());
     }
 
@@ -53,11 +49,11 @@ public class LegalConsultation extends AuditableAbstractAggregateRoot<LegalConsu
         return this;
     }
 
-    public Long getMedicID() {
-        return this.medicId.profileId();
+    public String getMedicID() {
+        return this.medicId.medicDefenseId();
     }
 
-    public Long getLawyerID() {
-        return this.lawyerId.profileId();
+    public String getLawyerID() {
+        return this.lawyerId.medicDefenseId();
     }
 }

@@ -1,6 +1,6 @@
 package com.medicdefense.backend.consultation.domain.model.commands;
 
-import com.medicdefense.backend.consultation.domain.model.valueobjects.ProfileId;
+import com.medicdefense.backend.consultation.domain.model.valueobjects.MedicDefenseId;
 
-public record CreateLegalConsultationCommand(ProfileId medicId, ProfileId lawyerId) {
+public record CreateLegalConsultationCommand(MedicDefenseId medicId, MedicDefenseId lawyerId) {
 }

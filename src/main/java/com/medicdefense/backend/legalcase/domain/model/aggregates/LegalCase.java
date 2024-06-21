@@ -2,6 +2,7 @@ package com.medicdefense.backend.legalcase.domain.model.aggregates;
 
 import com.medicdefense.backend.legalcase.domain.model.commands.CreateLegalCaseCommand;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
@@ -28,15 +29,19 @@ public class LegalCase extends AbstractAggregateRoot<LegalCase> {
     @Column(nullable = false)
     private String status;
 
-    @CreatedDate
-    @Column(nullable = false, updatable = false)
-    private Date createdAt;
+    @NotNull
+    private String medicRecordId;
 
-    @LastModifiedDate
-    @Column(nullable = false)
-    private Date updatedAt;
+    @NotNull
+    private String lawyerRecordId;
 
     protected LegalCase() {
+    }
+
+    public LegalCase(String caseNumber, String description, String status) {
+        this.caseNumber = caseNumber;
+        this.description = description;
+        this.status = status;
     }
 
     public LegalCase(CreateLegalCaseCommand command) {

@@ -1,7 +1,6 @@
 package com.medicdefense.backend.consultation.domain.model.entities;
 
 import com.medicdefense.backend.consultation.domain.model.aggregate.LegalIssue;
-import com.medicdefense.backend.consultation.domain.model.valueobjects.ProfileId;
 import com.medicdefense.backend.shared.domain.model.entities.AuditableModel;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
@@ -28,9 +27,9 @@ public class MessageItem extends AuditableModel{
     private String message;
 
     @NotNull
-    private Long senderId;
+    private String senderId;
 
-    public MessageItem(LegalIssue legalIssue, String message, Long senderId) {
+    public MessageItem(LegalIssue legalIssue, String message, String senderId) {
         this.date = new Date(System.currentTimeMillis());
         this.legalIssue = legalIssue;
         this.message = message;
@@ -41,7 +40,7 @@ public class MessageItem extends AuditableModel{
         this.date = new Date(System.currentTimeMillis());
         this.legalIssue = null;
         this.message = "";
-        this.senderId = 0L;
+        this.senderId = "";
     }
 
 }

@@ -56,7 +56,7 @@ public class LegalIssue extends AuditableAbstractAggregateRoot<LegalIssue> {
         this.status = LegalIssueStatus.CLOSED;
     }
 
-    public void addMessage(String message, Long senderId) {
+    public void addMessage(String message, String senderId) {
         this.messages.addMessageItems(this, message, senderId);
     }
 
@@ -72,7 +72,7 @@ public class LegalIssue extends AuditableAbstractAggregateRoot<LegalIssue> {
         return this.status.name().toLowerCase();
     }
 
-    public Long getLawyerId() {
+    public String getLawyerId() {
         return this.legalConsultation.getLawyerID();
     }
 }
