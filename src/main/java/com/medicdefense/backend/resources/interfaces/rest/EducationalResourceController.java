@@ -9,6 +9,8 @@ import com.medicdefense.backend.resources.interfaces.rest.resources.CreateEducat
 import com.medicdefense.backend.resources.interfaces.rest.resources.EducationalResourceResource;
 import com.medicdefense.backend.resources.interfaces.rest.transform.CreateEducationalResourceCommandFromResourceAssembler;
 import com.medicdefense.backend.resources.interfaces.rest.transform.EducationalResourceResourceFromEntityAssembler;
+import io.swagger.v3.oas.annotations.tags.Tag;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -18,7 +20,8 @@ import java.util.Optional;
 import static org.springframework.http.HttpStatus.CREATED;
 
 @RestController
-@RequestMapping("/api/v1/educational-resources")
+@RequestMapping(value ="/api/v1/educational-resources", produces = MediaType.APPLICATION_JSON_VALUE)
+@Tag(name = "Educational Resources", description = "Educational Resources Endpoints")
 public class EducationalResourceController {
     private final EducationalResourceCommandService educationalResourceCommandService;
     private final EducationalResourceQueryService educationalResourceQueryService;
@@ -54,8 +57,6 @@ public class EducationalResourceController {
             @RequestParam(required = false) String author) {
         if (title != null) {
             return getAllEducationalResourcesByTitle(title);
-        } else if (content != null) {
-            return getAllEducationalResourcesByContent(content);
         } else if (author != null) {
             return getAllEducationalResourcesByAuthor(author);
         } else {
@@ -65,15 +66,6 @@ public class EducationalResourceController {
 
     private ResponseEntity<List<EducationalResourceResource>> getAllEducationalResourcesByTitle(String title) {
         var query = new GetEducationalResourcesByTitleQuery(title);
-        var educationalResources = educationalResourceQueryService.handle(query);
-        if (educationalResources.isEmpty()) return ResponseEntity.notFound().build();
-        var educationalResourceResources = educationalResources.stream().map(
-                EducationalResourceResourceFromEntityAssembler::toResourceFromEntity).toList();
-        return ResponseEntity.ok(educationalResourceResources);
-    }
-
-    private ResponseEntity<List<EducationalResourceResource>> getAllEducationalResourcesByContent(String content) {
-        var query = new GetEducationalResourcesByContentTypeQuery(content);
         var educationalResources = educationalResourceQueryService.handle(query);
         if (educationalResources.isEmpty()) return ResponseEntity.notFound().build();
         var educationalResourceResources = educationalResources.stream().map(

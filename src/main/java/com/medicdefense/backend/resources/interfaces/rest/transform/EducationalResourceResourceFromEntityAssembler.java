@@ -5,6 +5,12 @@ import com.medicdefense.backend.resources.interfaces.rest.resources.EducationalR
 
 public class EducationalResourceResourceFromEntityAssembler {
     public static EducationalResourceResource toResourceFromEntity(EducationalResource entity){
-        return new EducationalResourceResource(entity.getId(), entity.getTitle(), entity.getAuthor(), entity.getContentType(), entity.getUrl());
+        return new EducationalResourceResource
+                (
+                        entity.getId(),
+                        entity.getTitle(),
+                        entity.getAuthor(),
+                        entity.getContentType().name(),
+                        entity.getUrl());
     }
 }

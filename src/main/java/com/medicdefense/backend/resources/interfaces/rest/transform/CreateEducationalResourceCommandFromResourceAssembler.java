@@ -5,6 +5,11 @@ import com.medicdefense.backend.resources.interfaces.rest.resources.CreateEducat
 
 public class CreateEducationalResourceCommandFromResourceAssembler {
     public static CreateEducationalResourceCommand toCommandFromResource(CreateEducationalResourceResource resource){
-        return new CreateEducationalResourceCommand(resource.title(), resource.author(), resource.contentType(), resource.url());
+        return new CreateEducationalResourceCommand
+                (
+                        resource.title(),
+                        resource.author(),
+                        resource.contentType(),
+                        resource.url());
     }
 }

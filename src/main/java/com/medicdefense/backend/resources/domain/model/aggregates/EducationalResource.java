@@ -1,6 +1,7 @@
 package com.medicdefense.backend.resources.domain.model.aggregates;
 
 import com.medicdefense.backend.resources.domain.model.commands.CreateEducationalResourceCommand;
+import com.medicdefense.backend.resources.domain.model.valueobjects.EducationalResourceContent;
 import jakarta.persistence.*;
 import lombok.Getter;
 import org.springframework.data.annotation.CreatedDate;
@@ -25,19 +26,12 @@ public class EducationalResource extends AbstractAggregateRoot<EducationalResour
     @Column(nullable = false)
     private String author;
 
+    @Enumerated(EnumType.STRING)
     @Column(nullable = false)
-    private String contentType; // e.g., "Article", "Video", "Book"
+    private EducationalResourceContent contentType;
 
     @Column(nullable = false)
     private String url;
-
-    @CreatedDate
-    @Column(nullable = false, updatable = false)
-    private Date createdAt;
-
-    @LastModifiedDate
-    @Column(nullable = false)
-    private Date updatedAt;
 
     protected EducationalResource() {
     }
@@ -50,7 +44,7 @@ public class EducationalResource extends AbstractAggregateRoot<EducationalResour
     public EducationalResource(CreateEducationalResourceCommand command) {
         this.title = command.title();
         this.author = command.author();
-        this.contentType = command.contentType();
+        this.contentType = EducationalResourceContent.fromId(command.contentType());
         this.url = command.url();
     }
 }
