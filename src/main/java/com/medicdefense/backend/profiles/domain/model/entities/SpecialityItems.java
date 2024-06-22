@@ -22,7 +22,8 @@ public class SpecialityItems extends AuditableModel {
     @NotNull
     private String name;
 
-    public SpecialityItems(String name) {
+    public SpecialityItems(Profile profile, String name) {
+        this.profile = profile;
         this.name = name;
     }
 

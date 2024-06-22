@@ -1,14 +1,13 @@
 package com.medicdefense.backend.profiles.interfaces.rest;
 
 
+import com.medicdefense.backend.profiles.domain.model.commands.UpdateImgUrlCommand;
 import com.medicdefense.backend.profiles.domain.model.queries.GetAllProfilesQuery;
 import com.medicdefense.backend.profiles.domain.model.queries.GetProfileByIdQuery;
 import com.medicdefense.backend.profiles.domain.services.ProfileCommandService;
 import com.medicdefense.backend.profiles.domain.services.ProfileQueryService;
-import com.medicdefense.backend.profiles.interfaces.rest.resources.CreateProfileResource;
-import com.medicdefense.backend.profiles.interfaces.rest.resources.ProfileResource;
-import com.medicdefense.backend.profiles.interfaces.rest.transform.CreateProfileCommandFromResourceAssembler;
-import com.medicdefense.backend.profiles.interfaces.rest.transform.ProfileResourceFromEntityAssembler;
+import com.medicdefense.backend.profiles.interfaces.rest.resources.*;
+import com.medicdefense.backend.profiles.interfaces.rest.transform.*;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -57,5 +56,50 @@ public class ProfilesController {
                 .map(ProfileResourceFromEntityAssembler::toResourceFromEntity)
                 .collect(Collectors.toList());
         return ResponseEntity.ok(profileResources);
+    }
+
+    @PutMapping("/{profileId}/DNI")
+    public ResponseEntity<ProfileResource> updateDni(@PathVariable Long profileId, @RequestBody UpdateDNIResource dni) {
+        var updateDniCommand = UpdateDNICommandFromResourceAssembler.ToCommandFromResource(profileId, dni);
+        var updateDni = profileCommandService.handle(updateDniCommand);
+        if (updateDni.isEmpty()) return ResponseEntity.badRequest().build();
+        var profileResource = ProfileResourceFromEntityAssembler.toResourceFromEntity(updateDni.get());
+        return ResponseEntity.ok(profileResource);
+    }
+
+    @PutMapping("/{profileId}/Email")
+    public ResponseEntity<ProfileResource> updateEmail(@PathVariable Long profileId, @RequestBody UpdateEmailResource email) {
+        var updateEmailCommand = UpdateEmailCommandFromResourceAssembler.ToCommandFromResource(profileId, email);
+        var updateEmail = profileCommandService.handle(updateEmailCommand);
+        if (updateEmail.isEmpty()) return ResponseEntity.badRequest().build();
+        var profileResource = ProfileResourceFromEntityAssembler.toResourceFromEntity(updateEmail.get());
+        return ResponseEntity.ok(profileResource);
+    }
+
+    @PutMapping("/{profileId}/ImgUrl")
+    public ResponseEntity<ProfileResource> updateImgUrl(@PathVariable Long profileId, @RequestBody UpdateImgUrlResource imgUrl) {
+        var updateImgUrlCommand = UpdateImgUrlCommandFromResourceAssembler.ToCommandFromResource(profileId, imgUrl);
+        var updateImgUrl = profileCommandService.handle(updateImgUrlCommand);
+        if (updateImgUrl.isEmpty()) return ResponseEntity.badRequest().build();
+        var profileResource = ProfileResourceFromEntityAssembler.toResourceFromEntity(updateImgUrl.get());
+        return ResponseEntity.ok(profileResource);
+    }
+
+    @PutMapping("/{profileId}/Name")
+    public ResponseEntity<ProfileResource> updateName(@PathVariable Long profileId, @RequestBody UpdateNameResource name) {
+        var updateNameCommand = UpdateNameCommandFromResourceAssembler.ToCommandFromResource(profileId, name);
+        var updateName = profileCommandService.handle(updateNameCommand);
+        if (updateName.isEmpty()) return ResponseEntity.badRequest().build();
+        var profileResource = ProfileResourceFromEntityAssembler.toResourceFromEntity(updateName.get());
+        return ResponseEntity.ok(profileResource);
+    }
+
+    @PutMapping("/{profileId}/Phone")
+    public ResponseEntity<ProfileResource> updatePhone(@PathVariable Long profileId, @RequestBody UpdatePhoneResource phone) {
+        var updatePhoneCommand = UpdatePhoneCommandFromResourceAssembler.ToCommandFromResource(profileId, phone);
+        var updatePhone = profileCommandService.handle(updatePhoneCommand);
+        if (updatePhone.isEmpty()) return ResponseEntity.badRequest().build();
+        var profileResource = ProfileResourceFromEntityAssembler.toResourceFromEntity(updatePhone.get());
+        return ResponseEntity.ok(profileResource);
     }
 }

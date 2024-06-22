@@ -53,16 +53,29 @@ public class Profile extends AuditableAbstractAggregateRoot<Profile> {
 
     }
 
-    public void updateName(String firstName, String lastName) {
+    public Profile updateName(String firstName, String lastName) {
         this.name = new PersonName(firstName, lastName);
+        return this;
     }
 
-    public void updateEmail(String email) {
+    public Profile updateEmail(String email) {
         this.email = new EmailAddress(email);
+        return this;
     }
 
-    public void updatePhoneNumber(String phoneNumber) {
+    public Profile updatePhoneNumber(String phoneNumber) {
         this.phoneNumber = phoneNumber;
+        return this;
+    }
+
+    public Profile updateDNI(String DNI) {
+        this.DNI = DNI;
+        return this;
+    }
+
+    public Profile updateImage(String image_url) {
+        this.image_url = image_url;
+        return this;
     }
 
     public String getFullName() { return name.getFullName(); }
@@ -70,6 +83,6 @@ public class Profile extends AuditableAbstractAggregateRoot<Profile> {
     public String getEmailAddress() { return email.address(); }
 
     public void addSpeciality(String speciality) {
-        this.specialities.addSpecialityItem(speciality);
+        this.specialities.addSpecialityItem(this, speciality);
     }
 }

@@ -1,5 +1,6 @@
 package com.medicdefense.backend.profiles.domain.model.valueobjects;
 
+import com.medicdefense.backend.profiles.domain.model.aggregate.Profile;
 import com.medicdefense.backend.profiles.domain.model.entities.SpecialityItems;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Embeddable;
@@ -23,8 +24,8 @@ public class Specialities {
         this.specialityItems = new ArrayList<>();
     }
 
-    public void addSpecialityItem(String specialityItem) {
-        this.specialityItems.add(new SpecialityItems(specialityItem));
+    public void addSpecialityItem(Profile profile, String specialityItem) {
+        this.specialityItems.add(new SpecialityItems(profile, specialityItem));
     }
 
     public List<SpecialityItems> getSpecialityItems() {
