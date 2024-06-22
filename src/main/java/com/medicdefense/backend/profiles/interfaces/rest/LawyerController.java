@@ -53,7 +53,7 @@ public class LawyerController {
         return new ResponseEntity<>(lawyerResource, HttpStatus.CREATED);
     }
 
-    @GetMapping("/{recordId}")
+    @GetMapping("/{recordId}/medic-defense-record")
     public ResponseEntity<LawyerResource> getLawyerByRecordId(@PathVariable String recordId)
     {
         var medicDefenseRecordId = new MedicDefenseRecordId(recordId);
@@ -82,7 +82,7 @@ public class LawyerController {
         return ResponseEntity.ok(lawyerResources);
     }
 
-    @GetMapping("/{profileId}")
+    @GetMapping("/{profileId}/profile")
     public ResponseEntity<LawyerResource> getLawyerByProfileId(@PathVariable long profileId)
     {
         var Id = new ProfileId(profileId);

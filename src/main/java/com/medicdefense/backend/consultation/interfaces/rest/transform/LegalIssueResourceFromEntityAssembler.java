@@ -1,14 +1,14 @@
 package com.medicdefense.backend.consultation.interfaces.rest.transform;
 
-import com.medicdefense.backend.consultation.domain.model.aggregate.LegalIssue;
+import com.medicdefense.backend.consultation.domain.model.entities.LegalIssueItem;
 import com.medicdefense.backend.consultation.interfaces.rest.resources.LegalIssueResource;
 
 public class LegalIssueResourceFromEntityAssembler {
-    public static LegalIssueResource toResourceFromEntity(LegalIssue entity) {
+    public static LegalIssueResource toResourceFromEntity(LegalIssueItem entity) {
         return new LegalIssueResource(
                 entity.getId(),
-                entity.getTitle(),
-                entity.getFirstMessage(),
+                entity.getConsultation(),
+                entity.getResponse(),
                 entity.getLegalConsultationId(),
                 entity.getStatus()
         );

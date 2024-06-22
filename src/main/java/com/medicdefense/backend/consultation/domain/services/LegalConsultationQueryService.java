@@ -1,10 +1,8 @@
 package com.medicdefense.backend.consultation.domain.services;
 
 import com.medicdefense.backend.consultation.domain.model.aggregate.LegalConsultation;
-import com.medicdefense.backend.consultation.domain.model.queries.GetAllLegalConsultationsQuery;
-import com.medicdefense.backend.consultation.domain.model.queries.GetLegalConsultationsByIdQuery;
-import com.medicdefense.backend.consultation.domain.model.queries.GetLegalConsultationsByLawyerIdQuery;
-import com.medicdefense.backend.consultation.domain.model.queries.GetLegalConsultationsByMedicIdQuery;
+import com.medicdefense.backend.consultation.domain.model.entities.LegalIssueItem;
+import com.medicdefense.backend.consultation.domain.model.queries.*;
 
 import java.util.List;
 import java.util.Optional;
@@ -14,4 +12,6 @@ public interface LegalConsultationQueryService {
     Optional<LegalConsultation> handle(GetLegalConsultationsByIdQuery query);
     List<LegalConsultation> handle(GetLegalConsultationsByLawyerIdQuery query);
     List<LegalConsultation> handle(GetLegalConsultationsByMedicIdQuery query);
+    Optional<LegalIssueItem> handle(GetLegalIssueByIdAndConsultationIdQuery query);
+    Optional<LegalIssueItem> handle(GetLegalIssueByNameAndConsultationIdQuery query);
 }

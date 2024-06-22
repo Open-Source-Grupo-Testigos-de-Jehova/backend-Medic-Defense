@@ -6,9 +6,8 @@ import com.medicdefense.backend.consultation.interfaces.rest.resources.AskLegalI
 public class AskLegalIssueCommandFromResourceAssembler {
     public static AskLegalIssueCommand toCommandFromResource(AskLegalIssueResource resource) {
         return new AskLegalIssueCommand(
-                resource.title(),
-                resource.consultationId(),
-                resource.message()
+                resource.message(),
+                resource.consultationId()
         );
     }
 }

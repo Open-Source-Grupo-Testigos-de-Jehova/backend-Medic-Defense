@@ -1,6 +1,5 @@
 package com.medicdefense.backend.consultation.interfaces.rest;
 
-import com.medicdefense.backend.consultation.domain.model.aggregate.LegalConsultation;
 import com.medicdefense.backend.consultation.domain.model.commands.DeleteLegalConsultationCommand;
 import com.medicdefense.backend.consultation.domain.model.queries.GetAllLegalConsultationsQuery;
 import com.medicdefense.backend.consultation.domain.model.queries.GetLegalConsultationsByIdQuery;
@@ -8,10 +7,8 @@ import com.medicdefense.backend.consultation.domain.services.LegalConsultationCo
 import com.medicdefense.backend.consultation.domain.services.LegalConsultationQueryService;
 import com.medicdefense.backend.consultation.interfaces.rest.resources.CreateLegalConsultationResource;
 import com.medicdefense.backend.consultation.interfaces.rest.resources.LegalConsultationResource;
-import com.medicdefense.backend.consultation.interfaces.rest.resources.UpdateLegalConsultationResource;
 import com.medicdefense.backend.consultation.interfaces.rest.transform.LegalConsultationResourceFromEntityAssembler;
 import com.medicdefense.backend.consultation.interfaces.rest.transform.LegalCreateConsultationCommandFromResourceAssembler;
-import com.medicdefense.backend.consultation.interfaces.rest.transform.UpdateLegalConsultationCommandFromResourceAssembler;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -65,17 +62,6 @@ public class LegalConsultationController {
         var legalConsultations = legalConsultationQueryService.handle(new GetAllLegalConsultationsQuery());
         var legalConsultationResources = legalConsultations.stream().map(LegalConsultationResourceFromEntityAssembler::toResourceFromEntity).toList();
         return ResponseEntity.ok(legalConsultationResources);
-    }
-
-    @PutMapping("/{legalConsultationId}")
-    public ResponseEntity<LegalConsultationResource> updateLegalConsultation(@PathVariable Long legalConsultationId, @RequestBody UpdateLegalConsultationResource updateLegalConsultationResource) {
-        var updateLegalConsultationCommand = UpdateLegalConsultationCommandFromResourceAssembler.toCommandFromResource(legalConsultationId, updateLegalConsultationResource);
-        var updateLegalConsultation = legalConsultationCommandService.handle(updateLegalConsultationCommand);
-        if(updateLegalConsultation.isEmpty()) {
-            return ResponseEntity.notFound().build();
-        }
-        var legalConsultationResource = LegalConsultationResourceFromEntityAssembler.toResourceFromEntity(updateLegalConsultation.get());
-        return ResponseEntity.ok(legalConsultationResource);
     }
 
     @DeleteMapping("/{legalConsultationId}")

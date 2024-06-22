@@ -26,42 +26,42 @@ public class MedicStudentCommandServiceImpl implements MedicStudentCommandServic
     @Override
     public MedicDefenseRecordId handle(CreateMedicStudentCommand command) {
 
-            // Fetch medicDefenseId by email
-            var profileId = externalProfileService.fetchProfileIdByEmail(command.email());
+        // Fetch medicDefenseId by email
+        var profileId = externalProfileService.fetchProfileIdByEmail(command.email());
 
-            // If medicDefenseId is empty, create profile
-            if (profileId.isEmpty()) {
-                profileId = externalProfileService.createProfile(
-                        command.firstName(),
-                        command.lastName(),
-                        command.email(),
-                        command.phoneNumber(),
-                        command.DNI(),
-                        command.image_url()
-                );
-            } else {
-                medicStudentRepository.findByProfileId(profileId.get()).ifPresent(student -> {
-                    throw new IllegalArgumentException("Student already exists");
-                });
-            }
+        // If medicDefenseId is empty, create profile
+        if (profileId.isEmpty()) {
+            profileId = externalProfileService.createProfile(
+                    command.firstName(),
+                    command.lastName(),
+                    command.email(),
+                    command.phoneNumber(),
+                    command.DNI(),
+                    command.image_url()
+            );
+        } else {
+            medicStudentRepository.findByProfileId(profileId.get()).ifPresent(student -> {
+                throw new IllegalArgumentException("Student already exists");
+            });
+        }
 
-            if (profileId.isEmpty()) throw new IllegalArgumentException("Unable to create profile");
+        if (profileId.isEmpty()) throw new IllegalArgumentException("Unable to create profile");
 
-            var medicStudent = new MedicStudent(profileId.get());
-            if(universityRepository.existsByName(command.universityName()))
-            {
-                universityRepository.findByName(command.universityName())
-                        .map(university ->
-                        {
-                            medicStudent.addUniversity(university);
-                            return university;
-                        });
-            } else {
-                var university = new University(command.universityName());
-                medicStudent.addUniversity(university);
-            }
-            medicStudentRepository.save(medicStudent);
-            return medicStudent.getMedicDefenseMedicStudentId();
+        var university = new University();
+
+        if (universityRepository.existsByName(command.universityName())) {
+            university = universityRepository.findByName(command.universityName()).get();
+        } else {
+            university = new University(command.universityName());
+            universityRepository.save(university);
+        }
+
+        var medicStudent = new MedicStudent(profileId.get(), university);
+
+        university.setMedicStudent(medicStudent); // Aseguramos la relación bidireccional
+        medicStudentRepository.save(medicStudent);
+
+        return medicStudent.getMedicDefenseMedicStudentId();
     }
 
     @Override

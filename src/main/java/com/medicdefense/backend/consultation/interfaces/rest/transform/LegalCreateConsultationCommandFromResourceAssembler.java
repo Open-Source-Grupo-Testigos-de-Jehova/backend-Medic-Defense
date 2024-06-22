@@ -6,6 +6,7 @@ import com.medicdefense.backend.consultation.interfaces.rest.resources.CreateLeg
 
 public class LegalCreateConsultationCommandFromResourceAssembler {
     public static CreateLegalConsultationCommand toCommandFromResource(CreateLegalConsultationResource resource) {
-        return new CreateLegalConsultationCommand(new MedicDefenseId(resource.medicId()), new MedicDefenseId(resource.lawyerId()));
+        return new CreateLegalConsultationCommand
+                (new MedicDefenseId(resource.medicId()), new MedicDefenseId(resource.lawyerId()), resource.consultation());
     }
 }

@@ -20,6 +20,7 @@ public class University {
     @NotNull
     private String name;
 
+    @Setter
     @OneToOne
     @JoinColumn(name = "medic_student_id")
     private MedicStudent medicStudent;
@@ -28,11 +29,9 @@ public class University {
         this.name = "";
     }
 
-    public University(String name)
-    {
+    public University(String name) {
         this();
         this.name = name;
-
     }
 
     public void addUniversity(String name) {

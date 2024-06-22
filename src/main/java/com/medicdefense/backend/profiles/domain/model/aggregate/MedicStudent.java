@@ -34,14 +34,16 @@ public class MedicStudent extends AuditableAbstractAggregateRoot<MedicStudent> {
         this.medicDefenseMedicStudentId = new MedicDefenseRecordId();
         this.profileId = new ProfileId();
         this.university = new University();
+        this.university.setMedicStudent(this);
         ConsultationsMade = 0;
         PaidServices = 0;
-        this.university.setMedicStudent(this);
     }
 
-    public MedicStudent(ProfileId profileId) {
+    public MedicStudent(ProfileId profileId, University university) {
         this();
         this.profileId = profileId;
+        this.university = university;
+        this.university.setMedicStudent(this);
     }
 
     public MedicStudent(long profileId) {
@@ -75,5 +77,6 @@ public class MedicStudent extends AuditableAbstractAggregateRoot<MedicStudent> {
 
     public void addUniversity(University university) {
         this.university = university;
+        this.university.setMedicStudent(this);
     }
 }

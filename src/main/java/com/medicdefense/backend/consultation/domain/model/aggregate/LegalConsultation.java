@@ -1,6 +1,7 @@
 package com.medicdefense.backend.consultation.domain.model.aggregate;
 
 import com.medicdefense.backend.consultation.domain.model.commands.CreateLegalConsultationCommand;
+import com.medicdefense.backend.consultation.domain.model.valueobjects.LegalIssue;
 import com.medicdefense.backend.consultation.domain.model.valueobjects.MedicDefenseId;
 import com.medicdefense.backend.shared.domain.model.aggregates.AuditableAbstractAggregateRoot;
 import jakarta.persistence.*;
@@ -11,8 +12,6 @@ import java.sql.Date;
 @Getter
 @Entity
 public class LegalConsultation extends AuditableAbstractAggregateRoot<LegalConsultation> {
-
-    private Date lastConsultation;
 
     @Embedded
     @AttributeOverrides({
@@ -26,27 +25,27 @@ public class LegalConsultation extends AuditableAbstractAggregateRoot<LegalConsu
     })
     private MedicDefenseId lawyerId;
 
+    @Embedded
+    private final LegalIssue legalIssue;
+
     public LegalConsultation() {
-        this.lastConsultation = new Date(System.currentTimeMillis());
+        this.legalIssue = new LegalIssue();
+        this.medicId = new MedicDefenseId();
+        this.lawyerId = new MedicDefenseId();
     }
 
-    public LegalConsultation(String medicId, String lawyerId) {
+    public LegalConsultation(String medicId, String lawyerId, String issue) {
         this();
         this.lawyerId = new MedicDefenseId(lawyerId);
         this.medicId = new MedicDefenseId(medicId);
-        this.lastConsultation = new Date(System.currentTimeMillis());
+        this.legalIssue.addLegalIssueItem(issue, this);
     }
 
     public LegalConsultation(CreateLegalConsultationCommand command) {
         this();
         this.lawyerId = command.lawyerId();
         this.medicId = command.medicId();
-        this.lastConsultation = new Date(System.currentTimeMillis());
-    }
-
-    public LegalConsultation updateInformation(Date date) {
-        this.lastConsultation = new Date(System.currentTimeMillis());
-        return this;
+        this.legalIssue.addLegalIssueItem(command.Issue(), this);
     }
 
     public String getMedicID() {
@@ -56,4 +55,17 @@ public class LegalConsultation extends AuditableAbstractAggregateRoot<LegalConsu
     public String getLawyerID() {
         return this.lawyerId.medicDefenseId();
     }
+
+    public void addLegalIssue(String issue) {
+        this.legalIssue.addLegalIssueItem(issue, this);
+    }
+
+    public void closeLegalIssue(Long Id) {
+        this.legalIssue.closeLegalIssueItemById(Id);
+    }
+
+    public void respondToLegalIssue(Long Id, String response) {
+        this.legalIssue.responseLegalIssueItemById(Id, response);
+    }
 }
+
