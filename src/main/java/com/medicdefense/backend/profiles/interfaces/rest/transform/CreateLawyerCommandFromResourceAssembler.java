@@ -10,8 +10,8 @@ public class CreateLawyerCommandFromResourceAssembler {
                 resource.lastName(),
                 resource.email(),
                 resource.phoneNumber(),
-                resource.image_url(),
                 resource.DNI(),
+                resource.image_url(),
                 resource.yearsExperience(),
                 resource.casesWon(),
                 resource.price()
