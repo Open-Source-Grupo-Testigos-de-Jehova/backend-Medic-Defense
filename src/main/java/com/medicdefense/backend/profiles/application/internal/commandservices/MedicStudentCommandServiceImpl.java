@@ -2,6 +2,8 @@ package com.medicdefense.backend.profiles.application.internal.commandservices;
 
 import com.medicdefense.backend.profiles.application.internal.outboundservices.acl.ExternalProfileService;
 import com.medicdefense.backend.profiles.domain.model.aggregate.MedicStudent;
+import com.medicdefense.backend.profiles.domain.model.commands.AddOneToConsultationMedicStudentMadeCommand;
+import com.medicdefense.backend.profiles.domain.model.commands.AddOneToPaidServiceMedicStudentCommand;
 import com.medicdefense.backend.profiles.domain.model.commands.AddUniversityCommand;
 import com.medicdefense.backend.profiles.domain.model.commands.CreateMedicStudentCommand;
 import com.medicdefense.backend.profiles.domain.model.entities.University;
@@ -10,6 +12,8 @@ import com.medicdefense.backend.profiles.domain.services.MedicStudentCommandServ
 import com.medicdefense.backend.profiles.infrasctructure.persistence.jpa.repositories.MedicStudentRepository;
 import com.medicdefense.backend.profiles.infrasctructure.persistence.jpa.repositories.UniversityRepository;
 import org.springframework.stereotype.Service;
+
+import java.util.Optional;
 
 @Service
 public class MedicStudentCommandServiceImpl implements MedicStudentCommandService {
@@ -98,4 +102,35 @@ public class MedicStudentCommandServiceImpl implements MedicStudentCommandServic
         }
     }
 
+    @Override
+    public Optional<MedicStudent> handle(AddOneToConsultationMedicStudentMadeCommand command) {
+        if (!medicStudentRepository.existsByMedicDefenseMedicStudentId(command.recordId())) {
+            throw new IllegalArgumentException("Medic Student does not exist");
+        }
+        var result = medicStudentRepository.findByMedicDefenseMedicStudentId(command.recordId());
+        if (result.isEmpty()) throw new IllegalArgumentException("Medic Student does not exist");
+        var medicStudentToUpdate = result.get();
+        try {
+            var updatedMedicStudent = medicStudentRepository.save(medicStudentToUpdate.AddConsultation());
+            return Optional.of(updatedMedicStudent);
+        } catch (Exception e) {
+            throw new IllegalArgumentException("Error while updating medic student: " + e.getMessage());
+        }
+    }
+
+    @Override
+    public Optional<MedicStudent> handle(AddOneToPaidServiceMedicStudentCommand command) {
+        if (!medicStudentRepository.existsByMedicDefenseMedicStudentId(command.recordId())) {
+            throw new IllegalArgumentException("Medic Student does not exist");
+        }
+        var result = medicStudentRepository.findByMedicDefenseMedicStudentId(command.recordId());
+        if (result.isEmpty()) throw new IllegalArgumentException("Medic Student does not exist");
+        var medicStudentToUpdate = result.get();
+        try {
+            var updatedMedicStudent = medicStudentRepository.save(medicStudentToUpdate.AddPaidService());
+            return Optional.of(updatedMedicStudent);
+        } catch (Exception e) {
+            throw new IllegalArgumentException("Error while updating medic student: " + e.getMessage());
+        }
+    }
 }

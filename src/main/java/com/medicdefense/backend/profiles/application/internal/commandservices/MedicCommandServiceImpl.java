@@ -2,6 +2,8 @@ package com.medicdefense.backend.profiles.application.internal.commandservices;
 
 import com.medicdefense.backend.profiles.application.internal.outboundservices.acl.ExternalProfileService;
 import com.medicdefense.backend.profiles.domain.model.aggregate.Medic;
+import com.medicdefense.backend.profiles.domain.model.commands.AddOneToConsultationMedicsMadeCommand;
+import com.medicdefense.backend.profiles.domain.model.commands.AddOneToPaidServiceMedicCommand;
 import com.medicdefense.backend.profiles.domain.model.commands.CreateMedicCommand;
 import com.medicdefense.backend.profiles.domain.model.commands.CreateProfileCommand;
 import com.medicdefense.backend.profiles.domain.model.queries.GetProfileByEmailQuery;
@@ -55,5 +57,37 @@ public class MedicCommandServiceImpl implements MedicCommandService {
             var medic = new Medic(profileId.get());
             medicRepository.save(medic);
             return medic.getMedicDefenseMedicId();
+    }
+
+    @Override
+    public Optional<Medic> handle(AddOneToConsultationMedicsMadeCommand command) {
+        if (!medicRepository.existsByMedicDefenseMedicId(command.recordId())) {
+            throw new IllegalArgumentException("Medic does not exist");
+        }
+        var result = medicRepository.findByMedicDefenseMedicId(command.recordId());
+        if (result.isEmpty()) throw new IllegalArgumentException("Medic does not exist");
+        var medicToUpdate = result.get();
+        try {
+            var updatedMedic = medicRepository.save(medicToUpdate.AddConsultation());
+            return Optional.of(updatedMedic);
+        } catch (Exception e) {
+            throw new IllegalArgumentException("Error while updating medic: " + e.getMessage());
+        }
+    }
+
+    @Override
+    public Optional<Medic> handle(AddOneToPaidServiceMedicCommand command) {
+        if (!medicRepository.existsByMedicDefenseMedicId(command.recordId())) {
+            throw new IllegalArgumentException("Medic does not exist");
+        }
+        var result = medicRepository.findByMedicDefenseMedicId(command.recordId());
+        if (result.isEmpty()) throw new IllegalArgumentException("Medic does not exist");
+        var medicToUpdate = result.get();
+        try {
+            var updatedMedic = medicRepository.save(medicToUpdate.AddPaidService());
+            return Optional.of(updatedMedic);
+        } catch (Exception e) {
+            throw new IllegalArgumentException("Error while updating medic: " + e.getMessage());
+        }
     }
 }

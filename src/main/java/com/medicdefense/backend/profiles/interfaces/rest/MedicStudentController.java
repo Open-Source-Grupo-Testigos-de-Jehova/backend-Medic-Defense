@@ -9,9 +9,7 @@ import com.medicdefense.backend.profiles.domain.services.MedicStudentCommandServ
 import com.medicdefense.backend.profiles.domain.services.MedicStudentQueryService;
 import com.medicdefense.backend.profiles.interfaces.rest.resources.CreateMedicStudentResource;
 import com.medicdefense.backend.profiles.interfaces.rest.resources.MedicStudentResource;
-import com.medicdefense.backend.profiles.interfaces.rest.transform.CreateMedicStudentCommandFromResourceAssembler;
-import com.medicdefense.backend.profiles.interfaces.rest.transform.MedicResourceFromEntityAssembler;
-import com.medicdefense.backend.profiles.interfaces.rest.transform.MedicStudentResourceFromEntityAssembler;
+import com.medicdefense.backend.profiles.interfaces.rest.transform.*;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -76,5 +74,31 @@ public class MedicStudentController {
                 .map(MedicStudentResourceFromEntityAssembler::toResourceFromEntity)
                 .collect(Collectors.toList());
         return ResponseEntity.ok(medicStudentResources);
+    }
+
+    @PutMapping("/{recordId}/add-one-to-consultation")
+    public ResponseEntity<MedicStudentResource> addOneToConsultation(@PathVariable String recordId) {
+        var medicDefenseRecordId = new MedicDefenseRecordId(recordId);
+        var addOneToConsultationCommand = AddOneToConsultationMedicStudentCommandFromResourceAssembler.ToCommandFromResource(medicDefenseRecordId);
+        var medicStudent = medicStudentCommandService.handle(addOneToConsultationCommand);
+        if(medicStudent.isEmpty())
+        {
+            return ResponseEntity.badRequest().build();
+        }
+        var medicStudentResource = MedicStudentResourceFromEntityAssembler.toResourceFromEntity(medicStudent.get());
+        return ResponseEntity.ok(medicStudentResource);
+    }
+
+    @PutMapping("/{recordId}/add-one-to-paid-service")
+    public ResponseEntity<MedicStudentResource> addOneToPaidService(@PathVariable String recordId) {
+        var medicDefenseRecordId = new MedicDefenseRecordId(recordId);
+        var addOneToPaidServiceCommand = AddOneToPaidServiceMedicStudentCommandFromResourceAssembler.ToCommandFromResource(medicDefenseRecordId);
+        var medicStudent = medicStudentCommandService.handle(addOneToPaidServiceCommand);
+        if(medicStudent.isEmpty())
+        {
+            return ResponseEntity.badRequest().build();
+        }
+        var medicStudentResource = MedicStudentResourceFromEntityAssembler.toResourceFromEntity(medicStudent.get());
+        return ResponseEntity.ok(medicStudentResource);
     }
 }

@@ -90,5 +90,33 @@ public class MedicController {
         var medicResource = MedicResourceFromEntityAssembler.toResourceFromEntity(medic.get());
         return ResponseEntity.ok(medicResource);
     }
+
+    @PutMapping("/{recordId}/add-one-to-consultation")
+    public ResponseEntity<MedicResource> addOneToConsultation(@PathVariable String recordId)
+    {
+        var medicDefenseRecordId = new MedicDefenseRecordId(recordId);
+        var addOneToConsultationCommand = AddOneToConsultationMedicCommandFromResourceAssembler.ToCommandFromResource(medicDefenseRecordId);
+        var addOneToConsultation = medicCommandService.handle(addOneToConsultationCommand);
+        if(addOneToConsultation.isEmpty())
+        {
+            return ResponseEntity.badRequest().build();
+        }
+        var medicResource = MedicResourceFromEntityAssembler.toResourceFromEntity(addOneToConsultation.get());
+        return ResponseEntity.ok(medicResource);
+    }
+
+    @PutMapping("/{recordId}/add-one-to-paid-service")
+    public ResponseEntity<MedicResource> addOneToPaidService(@PathVariable String recordId)
+    {
+        var medicDefenseRecordId = new MedicDefenseRecordId(recordId);
+        var addOneToPaidServiceCommand = AddOneToPaidServiceMedicCommandFromResourceAssembler.ToCommandFromResource(medicDefenseRecordId);
+        var addOneToPaidService = medicCommandService.handle(addOneToPaidServiceCommand);
+        if(addOneToPaidService.isEmpty())
+        {
+            return ResponseEntity.badRequest().build();
+        }
+        var medicResource = MedicResourceFromEntityAssembler.toResourceFromEntity(addOneToPaidService.get());
+        return ResponseEntity.ok(medicResource);
+    }
 }
 

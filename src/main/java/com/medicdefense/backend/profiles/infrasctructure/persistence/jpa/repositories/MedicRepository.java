@@ -13,4 +13,5 @@ import java.util.Optional;
 public interface MedicRepository extends JpaRepository<Medic, Long> {
     Optional<Medic> findByMedicDefenseMedicId(MedicDefenseRecordId medicDefenseRecordId);
     Optional<Medic> findByProfileId(ProfileId profileId);
+    boolean existsByMedicDefenseMedicId(MedicDefenseRecordId medicDefenseRecordId);
 }

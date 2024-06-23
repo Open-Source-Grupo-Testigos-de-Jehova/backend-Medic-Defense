@@ -8,11 +8,8 @@ import com.medicdefense.backend.profiles.domain.model.valueobjects.MedicDefenseR
 import com.medicdefense.backend.profiles.domain.model.valueobjects.ProfileId;
 import com.medicdefense.backend.profiles.domain.services.LawyerCommandService;
 import com.medicdefense.backend.profiles.domain.services.LawyerQueryService;
-import com.medicdefense.backend.profiles.interfaces.rest.resources.CreateLawyerResource;
-import com.medicdefense.backend.profiles.interfaces.rest.resources.LawyerResource;
-import com.medicdefense.backend.profiles.interfaces.rest.transform.CreateLawyerCommandFromResourceAssembler;
-import com.medicdefense.backend.profiles.interfaces.rest.transform.LawyerResourceFromEntityAssembler;
-import com.medicdefense.backend.profiles.interfaces.rest.transform.ProfileResourceFromEntityAssembler;
+import com.medicdefense.backend.profiles.interfaces.rest.resources.*;
+import com.medicdefense.backend.profiles.interfaces.rest.transform.*;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -93,6 +90,39 @@ public class LawyerController {
             return ResponseEntity.notFound().build();
         }
         var lawyerResource = LawyerResourceFromEntityAssembler.toResourceFromEntity(lawyer.get());
+        return ResponseEntity.ok(lawyerResource);
+    }
+
+    @PutMapping("/{recordId}/price")
+    public ResponseEntity<LawyerResource> updatePrice(@PathVariable String recordId, @RequestBody UpdatePriceResource resource)
+    {
+        var medicDefenseRecordId = new MedicDefenseRecordId(recordId);
+        var updatePriceCommand = UpdatePriceCommandFromResourceAssembler.fromResource(medicDefenseRecordId, resource);
+        var updatePrice = lawyerCommandService.handle(updatePriceCommand);
+        if (updatePrice.isEmpty()) return ResponseEntity.badRequest().build();
+        var lawyerResource = LawyerResourceFromEntityAssembler.toResourceFromEntity(updatePrice.get());
+        return ResponseEntity.ok(lawyerResource);
+    }
+
+    @PutMapping("/{recordId}/WonCases")
+    public ResponseEntity<LawyerResource> updateWonCases(@PathVariable String recordId, @RequestBody UpdateWonCasesResource resource)
+    {
+        var medicDefenseRecordId = new MedicDefenseRecordId(recordId);
+        var updateWonCasesCommand = UpdateWonCasesCommandFromResourceAssembler.fromResource(medicDefenseRecordId, resource);
+        var updateWonCases = lawyerCommandService.handle(updateWonCasesCommand);
+        if (updateWonCases.isEmpty()) return ResponseEntity.badRequest().build();
+        var lawyerResource = LawyerResourceFromEntityAssembler.toResourceFromEntity(updateWonCases.get());
+        return ResponseEntity.ok(lawyerResource);
+    }
+
+    @PutMapping("/{recordId}/YearExperience")
+    public ResponseEntity<LawyerResource> updateYearExperience(@PathVariable String recordId, @RequestBody UpdateYearExperienceResource resource)
+    {
+        var medicDefenseRecordId = new MedicDefenseRecordId(recordId);
+        var updateYearExperienceCommand = UpdateYearExperienceCommandFromResourceAssembler.fromResource(medicDefenseRecordId, resource);
+        var updateYearExperience = lawyerCommandService.handle(updateYearExperienceCommand);
+        if (updateYearExperience.isEmpty()) return ResponseEntity.badRequest().build();
+        var lawyerResource = LawyerResourceFromEntityAssembler.toResourceFromEntity(updateYearExperience.get());
         return ResponseEntity.ok(lawyerResource);
     }
 }

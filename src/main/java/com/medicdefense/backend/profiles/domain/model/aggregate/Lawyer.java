@@ -51,16 +51,21 @@ public class Lawyer extends AuditableAbstractAggregateRoot<Lawyer> {
         Price = price;
     }
 
-    public void updateYearsExperience(int yearsExperience) {
+    public Lawyer updateYearsExperience(int yearsExperience)
+    {
         YearsExperience = yearsExperience;
+        return this;
     }
 
-    public void updateCasesWon(int casesWon) {
+    public Lawyer updateCasesWon(int casesWon) {
         CasesWon = casesWon;
+        return this;
     }
 
-    public void updatePrice(int price) {
+    public Lawyer updatePrice(int price)
+    {
         Price = price;
+        return this;
     }
 
     public Long getProfileId() {

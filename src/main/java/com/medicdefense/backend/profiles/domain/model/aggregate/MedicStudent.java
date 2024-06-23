@@ -63,12 +63,14 @@ public class MedicStudent extends AuditableAbstractAggregateRoot<MedicStudent> {
         return this.medicDefenseMedicStudentId.RecordId();
     }
 
-    public void AddConsultation() {
+    public MedicStudent AddConsultation() {
         ConsultationsMade++;
+        return this;
     }
 
-    public void AddPaidService() {
+    public MedicStudent AddPaidService() {
         PaidServices++;
+        return this;
     }
 
     public Long getProfileId() {

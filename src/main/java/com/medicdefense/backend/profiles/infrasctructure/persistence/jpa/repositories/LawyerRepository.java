@@ -12,4 +12,5 @@ import java.util.Optional;
 public interface LawyerRepository extends JpaRepository<Lawyer, Long> {
     Optional<Lawyer> findByMedicDefenseRecordId(MedicDefenseRecordId medicDefenseRecordId);
     Optional<Lawyer> findByProfileId(ProfileId profileId);
+    boolean existsByMedicDefenseRecordId(MedicDefenseRecordId medicDefenseRecordId);
 }
