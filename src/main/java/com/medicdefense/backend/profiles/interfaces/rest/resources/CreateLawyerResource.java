@@ -5,8 +5,8 @@ public record CreateLawyerResource (
         String lastName,
         String email,
         String phoneNumber,
-        String image_url,
         String DNI,
+        String image_url,
         int yearsExperience,
         int casesWon,
         int price){
