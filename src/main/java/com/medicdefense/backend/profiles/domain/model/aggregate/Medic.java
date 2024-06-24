@@ -52,20 +52,34 @@ public class Medic extends AuditableAbstractAggregateRoot<Medic> {
         return this.medicDefenseMedicId.RecordId();
     }
 
+    /**
+     * Adds a consultation to the medic.
+     * @return The updated medic.
+     */
     public Medic AddConsultation() {
         ConsultationsMade++;
         return this;
     }
 
+    /**
+     * Adds a paid service to the medic.
+     * @return The updated medic.
+     */
     public Medic AddPaidService() {
         PaidServices++;
         return this;
     }
 
+    /**
+     * @return The profile id of the medic.
+     */
     public Long getProfileId() {
         return this.profileId.profileId();
     }
 
+    /**
+     * @return The user id of the medic.
+     */
     public Long getUserId() {
         return this.userId.userId();
     }

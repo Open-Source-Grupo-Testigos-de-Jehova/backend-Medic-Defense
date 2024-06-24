@@ -58,17 +58,32 @@ public class Lawyer extends AuditableAbstractAggregateRoot<Lawyer> {
         Price = price;
     }
 
+    /**
+     * Updates the years of experience of the lawyer.
+     * @param yearsExperience The new years of experience.
+     * @return The updated lawyer.
+     */
     public Lawyer updateYearsExperience(int yearsExperience)
     {
         YearsExperience = yearsExperience;
         return this;
     }
 
+    /**
+     * Updates the number of cases won by the lawyer.
+     * @param casesWon The new number of cases won.
+     * @return The updated lawyer.
+     */
     public Lawyer updateCasesWon(int casesWon) {
         CasesWon = casesWon;
         return this;
     }
 
+    /**
+     * Updates the price of the lawyer.
+     * @param price The new price.
+     * @return The updated lawyer.
+     */
     public Lawyer updatePrice(int price)
     {
         Price = price;
@@ -84,6 +99,9 @@ public class Lawyer extends AuditableAbstractAggregateRoot<Lawyer> {
         return this.userId.userId();
     }
 
+    /**
+     * @return The record id of the lawyer.
+     */
     public String getLawyerRecordId() {
         return this.medicDefenseRecordId.RecordId();
     }

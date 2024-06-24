@@ -79,6 +79,10 @@ public class MedicStudent extends AuditableAbstractAggregateRoot<MedicStudent> {
         return this.userId.userId();
     }
 
+    /**
+     * Add a university to the medic student
+     * @param university The university to add
+     */
     public void addUniversity(University university) {
         this.university = university;
         this.university.setMedicStudent(this);
