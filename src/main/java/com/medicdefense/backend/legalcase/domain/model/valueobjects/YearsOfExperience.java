@@ -2,6 +2,10 @@ package com.medicdefense.backend.legalcase.domain.model.valueobjects;
 
 import jakarta.persistence.Embeddable;
 
+/**
+ * This class represents the contact information of a person.
+ */
+
 @Embeddable
 public record YearsOfExperience(int years) {
 

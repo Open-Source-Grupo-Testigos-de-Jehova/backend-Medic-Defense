@@ -2,6 +2,10 @@ package com.medicdefense.backend.legalcase.domain.model.valueobjects;
 
 import jakarta.persistence.Embeddable;
 
+/**
+ * This class represents the price per hour of a service.
+ */
+
 @Embeddable
 public record PricePerHour(double amount, String currency) {
 

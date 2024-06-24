@@ -82,7 +82,8 @@ public class EducationalResourceController {
         return ResponseEntity.ok(educationalResourceResources);
     }
 
-    private ResponseEntity<List<EducationalResourceResource>> getAllEducationalResources() {
+    @GetMapping("/all")
+    public ResponseEntity<List<EducationalResourceResource>> getAllEducationalResources() {
         var educationalResources = educationalResourceQueryService.handle(new GetAllEducationalResourcesQuery());
         var educationalResourceResources = educationalResources.stream().map(
                 EducationalResourceResourceFromEntityAssembler::toResourceFromEntity).toList();

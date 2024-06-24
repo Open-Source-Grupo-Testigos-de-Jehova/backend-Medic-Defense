@@ -9,6 +9,10 @@ import org.springframework.stereotype.Service;
 
 import java.util.Optional;
 
+/**
+ * This class is responsible for managing the LegalCase entities in the database.
+ */
+
 @Service
 public class LegalCaseCommandServiceImpl implements LegalCaseCommandService {
     private final LegalCaseRepository legalCaseRepository;

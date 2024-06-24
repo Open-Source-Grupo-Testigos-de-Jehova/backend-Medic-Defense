@@ -9,6 +9,10 @@ import com.medicdefense.backend.legalcase.domain.model.queries.GetLegalCaseBySta
 import java.util.List;
 import java.util.Optional;
 
+/**
+ * This interface is responsible for managing the LegalCase entities in the database.
+ */
+
 public interface LegalCaseQueryService {
     Optional<LegalCase> handle(GetLegalCaseByIdQuery query);
     List<LegalCase> handle(GetLegalCaseByDescriptionQuery query);

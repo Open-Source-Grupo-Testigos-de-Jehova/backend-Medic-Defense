@@ -4,6 +4,7 @@ import com.medicdefense.backend.legalcase.domain.model.commands.CreateLegalCaseC
 import com.medicdefense.backend.legalcase.domain.model.valueobjects.LegalCaseStatus;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 import lombok.Getter;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
@@ -11,6 +12,10 @@ import org.springframework.data.domain.AbstractAggregateRoot;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.util.Date;
+
+/**
+ * This class represents a legal case.
+ */
 
 @Getter
 @Entity
@@ -22,15 +27,18 @@ public class LegalCase extends AbstractAggregateRoot<LegalCase> {
     private Long id;
 
     @Column(nullable = false)
+    @Size(max = 120)
     private String description;
 
     @Column(nullable = false)
     private LegalCaseStatus status;
 
     @NotNull
+    @Size(max = 120)
     private String medicRecordId;
 
     @NotNull
+    @Size(max = 120)
     private String lawyerRecordId;
 
     protected LegalCase() {

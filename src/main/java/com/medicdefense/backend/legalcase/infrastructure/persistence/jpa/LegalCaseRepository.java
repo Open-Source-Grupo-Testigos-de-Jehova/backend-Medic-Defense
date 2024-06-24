@@ -8,6 +8,10 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 import java.util.Optional;
 
+/**
+ * This interface is responsible for managing the LegalCase entities in the database.
+ */
+
 @Repository
 public interface LegalCaseRepository extends JpaRepository<LegalCase, Long> {
     List<LegalCase> findByDescriptionContaining(String description);

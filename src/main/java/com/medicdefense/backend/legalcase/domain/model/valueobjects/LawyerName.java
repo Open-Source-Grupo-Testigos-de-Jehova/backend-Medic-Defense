@@ -3,6 +3,10 @@ package com.medicdefense.backend.legalcase.domain.model.valueobjects;
 
 import jakarta.persistence.Embeddable;
 
+/**
+ * This class represents the name of a lawyer.
+ */
+
 @Embeddable
 public record LawyerName(String firstName, String lastName) {
 

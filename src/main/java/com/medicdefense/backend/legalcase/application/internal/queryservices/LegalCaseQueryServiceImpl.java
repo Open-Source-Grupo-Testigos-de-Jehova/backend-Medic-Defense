@@ -12,6 +12,10 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Optional;
 
+/**
+ * This class is responsible for managing the LegalCase entities in the database.
+ */
+
 @Service
 public class LegalCaseQueryServiceImpl implements LegalCaseQueryService {
     private final LegalCaseRepository legalCaseRepository;
