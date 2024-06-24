@@ -41,9 +41,4 @@ public class MedicStudentQueryServiceImpl implements MedicStudentQueryService {
                 .findByMedicDefenseMedicStudentId(medicStudentId)
                 .map(MedicStudent::getUniversity);
     }
-
-    @Override
-    public Optional<MedicStudent> handle(GetMedicStudentByUserIdQuery query) {
-        return medicStudentRepository.findByUserId(query.userId());
-    }
 }

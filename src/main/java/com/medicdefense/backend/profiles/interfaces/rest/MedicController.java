@@ -3,10 +3,8 @@ package com.medicdefense.backend.profiles.interfaces.rest;
 import com.medicdefense.backend.profiles.domain.model.queries.GetAllMedicsQuery;
 import com.medicdefense.backend.profiles.domain.model.queries.GetMedicByMedicDefenseRecordIdQuery;
 import com.medicdefense.backend.profiles.domain.model.queries.GetMedicByProfileIdQuery;
-import com.medicdefense.backend.profiles.domain.model.queries.GetMedicByUserIdQuery;
 import com.medicdefense.backend.profiles.domain.model.valueobjects.MedicDefenseRecordId;
 import com.medicdefense.backend.profiles.domain.model.valueobjects.ProfileId;
-import com.medicdefense.backend.profiles.domain.model.valueobjects.UserId;
 import com.medicdefense.backend.profiles.domain.services.MedicCommandService;
 import com.medicdefense.backend.profiles.domain.services.MedicQueryService;
 import com.medicdefense.backend.profiles.interfaces.rest.resources.CreateMedicResource;
@@ -34,16 +32,16 @@ public class MedicController {
     }
 
 
-    @PostMapping
+    @PostMapping("/sign-in")
     public ResponseEntity<MedicResource> createMedic(@RequestBody CreateMedicResource resource)
     {
         var createMedicCommand = CreateMedicCommandFromResourceAssembler.toCommandFromResource(resource);
         var medicId = medicCommandService.handle(createMedicCommand);
-        if(medicId.RecordId().isEmpty())
+        if(medicId.get().RecordId().isEmpty())
         {
             return ResponseEntity.badRequest().build();
         }
-        var getMedicByRecordIdQuery = new GetMedicByMedicDefenseRecordIdQuery(medicId);
+        var getMedicByRecordIdQuery = new GetMedicByMedicDefenseRecordIdQuery(medicId.get());
         var medic = medicQueryService.handle(getMedicByRecordIdQuery);
         if(medic.isEmpty())
         {
@@ -85,19 +83,6 @@ public class MedicController {
         var Id = new ProfileId(profileId);
         var getMedicByProfileIdQuery = new GetMedicByProfileIdQuery(Id);
         var medic = medicQueryService.handle(getMedicByProfileIdQuery);
-        if(medic.isEmpty())
-        {
-            return ResponseEntity.notFound().build();
-        }
-        var medicResource = MedicResourceFromEntityAssembler.toResourceFromEntity(medic.get());
-        return ResponseEntity.ok(medicResource);
-    }
-
-    @GetMapping("/{userId}/user")
-    public ResponseEntity<MedicResource> getMedicByUserId(@PathVariable Long userId)
-    {
-        var getMedicByUserIdQuery = new GetMedicByUserIdQuery(new UserId(userId));
-        var medic = medicQueryService.handle(getMedicByUserIdQuery);
         if(medic.isEmpty())
         {
             return ResponseEntity.notFound().build();

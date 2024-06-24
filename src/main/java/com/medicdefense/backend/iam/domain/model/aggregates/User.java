@@ -1,6 +1,7 @@
 package com.medicdefense.backend.iam.domain.model.aggregates;
 
 import com.medicdefense.backend.iam.domain.model.entities.Role;
+import com.medicdefense.backend.iam.domain.model.valueobjects.RecordId;
 import com.medicdefense.backend.shared.domain.model.aggregates.AuditableAbstractAggregateRoot;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
@@ -30,17 +31,23 @@ public class User extends AuditableAbstractAggregateRoot<User> {
             inverseJoinColumns = @JoinColumn(name = "role_id"))
     private Set<Role> roles;
 
+    @Embedded
+    @Column(unique = true)
+    private RecordId recordId;
+
     public User() {
         this.roles = new HashSet<>();
+        this.recordId = new RecordId();
     }
-    public User(String username, String password) {
+    public User(String username, String password, RecordId recordId) {
         this.username = username;
         this.password = password;
         this.roles = new HashSet<>();
+        this.recordId = recordId;
     }
 
-    public User(String username, String password, List<Role> roles) {
-        this(username, password);
+    public User(String username, String password, List<Role> roles, RecordId recordId) {
+        this(username, password, recordId);
         addRoles(roles);
     }
 
@@ -53,5 +60,9 @@ public class User extends AuditableAbstractAggregateRoot<User> {
         //var validatedRoles = Role.validateRoleSet(roles);
         this.roles.addAll(roles);
         return this;
+    }
+
+    public String getRecordId() {
+        return recordId.recordId();
     }
 }

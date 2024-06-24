@@ -80,13 +80,13 @@ public class WebSecurityConfiguration {
                                 "/swagger-ui/**",
                                 "/swagger-resources/**",
                                 "/webjars/**",
-                                "/api/v1/lawyers",
-                                "/api/v1/medic",
-                                "/api/v1/medic_student"
+                                "/api/v1/users/**",
+                                "/api/v1/medic"
                         ).permitAll()
                         .anyRequest().authenticated());
         http.authenticationProvider(authenticationProvider());
         http.addFilterBefore(authorizationRequestFilter(), UsernamePasswordAuthenticationFilter.class);
         return http.build();
     }
+
 }

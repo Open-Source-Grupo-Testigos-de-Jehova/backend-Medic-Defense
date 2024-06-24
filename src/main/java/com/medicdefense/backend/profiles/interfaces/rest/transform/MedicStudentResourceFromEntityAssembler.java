@@ -8,7 +8,6 @@ public class MedicStudentResourceFromEntityAssembler {
         return new MedicStudentResource(
                 entity.getMedicStudentRecordId(),
                 entity.getProfileId(),
-                entity.getUserId(),
                 entity.getUniversity().getId(),
                 entity.getConsultationsMade(),
                 entity.getPaidServices()

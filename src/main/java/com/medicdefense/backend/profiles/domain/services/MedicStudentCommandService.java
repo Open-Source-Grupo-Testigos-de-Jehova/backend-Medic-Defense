@@ -11,7 +11,7 @@ import com.medicdefense.backend.profiles.domain.model.valueobjects.MedicDefenseR
 import java.util.Optional;
 
 public interface MedicStudentCommandService {
-    MedicDefenseRecordId handle(CreateMedicStudentCommand command);
+    Optional<MedicDefenseRecordId> handle(CreateMedicStudentCommand command);
     void handle(AddUniversityCommand command);
     Optional<MedicStudent> handle(AddOneToConsultationMedicStudentMadeCommand command);
     Optional<MedicStudent> handle(AddOneToPaidServiceMedicStudentCommand command);

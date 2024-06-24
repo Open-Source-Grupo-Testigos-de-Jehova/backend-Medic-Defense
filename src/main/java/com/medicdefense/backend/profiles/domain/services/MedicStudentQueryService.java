@@ -12,5 +12,4 @@ public interface MedicStudentQueryService {
     Optional<MedicStudent> handle(GetMedicStudentByProfileIdQuery query);
     List<MedicStudent> handle(GetAllMedicStudentsQuery query);
     Optional<University> handle(GetUniversityByMedicStudentIdAndNameQuery query);
-    Optional<MedicStudent> handle(GetMedicStudentByUserIdQuery query);
 }

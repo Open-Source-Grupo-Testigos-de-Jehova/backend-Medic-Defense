@@ -4,10 +4,8 @@ package com.medicdefense.backend.profiles.interfaces.rest;
 import com.medicdefense.backend.profiles.domain.model.queries.GetAllLawyersQuery;
 import com.medicdefense.backend.profiles.domain.model.queries.GetLawyerByMedicDefenseRecordIdQuery;
 import com.medicdefense.backend.profiles.domain.model.queries.GetLawyerByProfileIdQuery;
-import com.medicdefense.backend.profiles.domain.model.queries.GetLawyerByUserIdQuery;
 import com.medicdefense.backend.profiles.domain.model.valueobjects.MedicDefenseRecordId;
 import com.medicdefense.backend.profiles.domain.model.valueobjects.ProfileId;
-import com.medicdefense.backend.profiles.domain.model.valueobjects.UserId;
 import com.medicdefense.backend.profiles.domain.services.LawyerCommandService;
 import com.medicdefense.backend.profiles.domain.services.LawyerQueryService;
 import com.medicdefense.backend.profiles.interfaces.rest.resources.*;
@@ -38,11 +36,11 @@ public class LawyerController {
     {
         var createLawyerCommand = CreateLawyerCommandFromResourceAssembler.toCommandFromResource(resource);
         var lawyerId = lawyerCommandService.handle(createLawyerCommand);
-        if(lawyerId.RecordId().isEmpty())
+        if(lawyerId.get().RecordId().isEmpty())
         {
             return ResponseEntity.badRequest().build();
         }
-        var getLawyerByRecordIdQuery = new GetLawyerByMedicDefenseRecordIdQuery(lawyerId);
+        var getLawyerByRecordIdQuery = new GetLawyerByMedicDefenseRecordIdQuery(lawyerId.get());
         var lawyer = lawyerQueryService.handle(getLawyerByRecordIdQuery);
         if(lawyer.isEmpty())
         {
@@ -87,20 +85,6 @@ public class LawyerController {
         var Id = new ProfileId(profileId);
         var getLawyerByProfileIdQuery = new GetLawyerByProfileIdQuery(Id);
         var lawyer = lawyerQueryService.handle(getLawyerByProfileIdQuery);
-        if(lawyer.isEmpty())
-        {
-            return ResponseEntity.notFound().build();
-        }
-        var lawyerResource = LawyerResourceFromEntityAssembler.toResourceFromEntity(lawyer.get());
-        return ResponseEntity.ok(lawyerResource);
-    }
-
-    @GetMapping("/{userId}/user")
-    public ResponseEntity<LawyerResource> getLawyerByUserId(@PathVariable long userId)
-    {
-        var Id = new UserId(userId);
-        var getLawyerByUserIdQuery = new GetLawyerByUserIdQuery(Id);
-        var lawyer = lawyerQueryService.handle(getLawyerByUserIdQuery);
         if(lawyer.isEmpty())
         {
             return ResponseEntity.notFound().build();

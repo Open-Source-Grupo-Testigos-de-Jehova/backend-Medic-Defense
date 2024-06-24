@@ -6,8 +6,6 @@ import com.medicdefense.backend.profiles.interfaces.rest.resources.CreateMedicRe
 public class CreateMedicCommandFromResourceAssembler {
     public static CreateMedicCommand toCommandFromResource(CreateMedicResource resource) {
         return new CreateMedicCommand(
-                resource.userName(),
-                resource.password(),
                 resource.firstName(),
                 resource.lastName(),
                 resource.email(),

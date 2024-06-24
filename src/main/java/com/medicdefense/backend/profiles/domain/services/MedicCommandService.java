@@ -10,7 +10,7 @@ import com.medicdefense.backend.profiles.domain.model.valueobjects.MedicDefenseR
 import java.util.Optional;
 
 public interface MedicCommandService {
-    MedicDefenseRecordId handle(CreateMedicCommand command);
+    Optional<MedicDefenseRecordId> handle(CreateMedicCommand command);
     Optional<Medic> handle(AddOneToConsultationMedicsMadeCommand command);
     Optional<Medic> handle(AddOneToPaidServiceMedicCommand command);
 }

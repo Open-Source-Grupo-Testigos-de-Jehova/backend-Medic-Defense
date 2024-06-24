@@ -1,14 +1,8 @@
 package com.medicdefense.backend.iam.interfaces.rest;
 
 import com.medicdefense.backend.iam.domain.services.UserCommandService;
-import com.medicdefense.backend.iam.interfaces.rest.resources.AuthenticatedUserResource;
-import com.medicdefense.backend.iam.interfaces.rest.resources.SignInResource;
-import com.medicdefense.backend.iam.interfaces.rest.resources.SignUpResource;
-import com.medicdefense.backend.iam.interfaces.rest.resources.UserResource;
-import com.medicdefense.backend.iam.interfaces.rest.transform.AuthenticatedUserResourceFromEntityAssembler;
-import com.medicdefense.backend.iam.interfaces.rest.transform.SignInCommandFromResourceAssembler;
-import com.medicdefense.backend.iam.interfaces.rest.transform.SignUpCommandFromResourceAssembler;
-import com.medicdefense.backend.iam.interfaces.rest.transform.UserResourceFromEntityAssembler;
+import com.medicdefense.backend.iam.interfaces.rest.resources.*;
+import com.medicdefense.backend.iam.interfaces.rest.transform.*;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -70,5 +64,16 @@ public class AuthenticationController {
         var userResource = UserResourceFromEntityAssembler.toResourceFromEntity(user.get());
         return new ResponseEntity<>(userResource, HttpStatus.CREATED);
 
+    }
+
+    @PostMapping("/sign-up-lawyer")
+    public ResponseEntity<UserResource> addNewLawyer(@RequestBody AddNewLawyerResource resource) {
+        var addANewLawyerCommand = AddNewLawyerCommandFromResourceAssembler.fromResource(resource);
+        var user = userCommandService.handle(addANewLawyerCommand);
+        if (user.isEmpty()) {
+            return ResponseEntity.badRequest().build();
+        }
+        var userResource = UserResourceFromEntityAssembler.toResourceFromEntity(user.get());
+        return new ResponseEntity<>(userResource, HttpStatus.CREATED);
     }
 }

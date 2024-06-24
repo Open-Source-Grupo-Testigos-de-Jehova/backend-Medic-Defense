@@ -2,7 +2,6 @@ package com.medicdefense.backend.profiles.domain.model.aggregate;
 
 import com.medicdefense.backend.profiles.domain.model.valueobjects.MedicDefenseRecordId;
 import com.medicdefense.backend.profiles.domain.model.valueobjects.ProfileId;
-import com.medicdefense.backend.profiles.domain.model.valueobjects.UserId;
 import com.medicdefense.backend.shared.domain.model.aggregates.AuditableAbstractAggregateRoot;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
@@ -19,9 +18,6 @@ public class Lawyer extends AuditableAbstractAggregateRoot<Lawyer> {
     @Embedded
     private ProfileId profileId;
 
-    @Embedded
-    private UserId userId;
-
     @NotNull
     private int YearsExperience;
 
@@ -34,25 +30,22 @@ public class Lawyer extends AuditableAbstractAggregateRoot<Lawyer> {
     public Lawyer() {
         this.medicDefenseRecordId = new MedicDefenseRecordId();
         this.profileId = new ProfileId();
-        this.userId = new UserId();
         YearsExperience = 0;
         CasesWon = 0;
         Price = 0;
     }
 
-    public Lawyer(ProfileId profileId, UserId userId, int yearsExperience, int casesWon, int price) {
+    public Lawyer(ProfileId profileId, int yearsExperience, int casesWon, int price) {
         this();
         this.profileId = profileId;
-        this.userId = userId;
         YearsExperience = yearsExperience;
         CasesWon = casesWon;
         Price = price;
     }
 
-    public Lawyer(long profileId, long userId, int yearsExperience, int casesWon, int price) {
+    public Lawyer(long profileId, int yearsExperience, int casesWon, int price) {
         this();
         this.profileId = new ProfileId(profileId);
-        this.userId = new UserId(userId);
         YearsExperience = yearsExperience;
         CasesWon = casesWon;
         Price = price;
@@ -92,11 +85,6 @@ public class Lawyer extends AuditableAbstractAggregateRoot<Lawyer> {
 
     public Long getProfileId() {
         return this.profileId.profileId();
-    }
-
-    public Long getUserId()
-    {
-        return this.userId.userId();
     }
 
     /**

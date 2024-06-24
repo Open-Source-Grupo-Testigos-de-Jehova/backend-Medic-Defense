@@ -36,8 +36,27 @@ public class IamContextFacade {
      * @param password The password of the user.
      * @return The id of the created user.
      */
-    public Long createUser(String username, String password) {
-        var signUpCommand = new SignUpCommand(username, password, List.of("ROLE_MEDIC"));
+    public Long createUser(String username,
+                           String password,
+                           String firstName,
+                           String lastName,
+                           String email,
+                           String phoneNumber,
+                           String DNI,
+                           String image_url,
+                           String university,
+                           String role
+    ) {
+        var signUpCommand = new SignUpCommand(username, password,
+                 firstName,
+                 lastName,
+                 email,
+                 phoneNumber,
+                 DNI,
+                 image_url,
+                 university,
+                role
+        );
         var result = userCommandService.handle(signUpCommand);
         if (result.isEmpty()) return 0L;
         return result.get().getId();
@@ -50,10 +69,26 @@ public class IamContextFacade {
      * @param roleNames The names of the roles of the user. When a role does not exist, it is ignored.
      * @return The id of the created user.
      */
-    public Long createUser(String username, String password, List<String> roleNames) {
+    public Long createUser(String username, String password, List<String> roleNames,
+                           String firstName,
+                           String lastName,
+                           String email,
+                           String phoneNumber,
+                           String DNI,
+                           String image_url,
+                           String university,
+                           String role) {
         //var roles = roleNames != null ? roleNames.stream().map(Role::toRoleFromName).toList() : new ArrayList<Role>();
         if (roleNames == null) roleNames = new ArrayList<>();
-        var signUpCommand = new SignUpCommand(username, password, roleNames);
+        var signUpCommand = new SignUpCommand(username, password,
+                firstName,
+                 lastName,
+                 email,
+                 phoneNumber,
+                 DNI,
+                 image_url,
+                university,
+                role);
         var result = userCommandService.handle(signUpCommand);
         if (result.isEmpty()) return 0L;
         return result.get().getId();

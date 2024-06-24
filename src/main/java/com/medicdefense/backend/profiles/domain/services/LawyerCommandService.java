@@ -7,7 +7,7 @@ import com.medicdefense.backend.profiles.domain.model.valueobjects.MedicDefenseR
 import java.util.Optional;
 
 public interface LawyerCommandService {
-    MedicDefenseRecordId handle(CreateLawyerCommand command);
+    Optional<MedicDefenseRecordId> handle(CreateLawyerCommand command);
     Optional<Lawyer> handle(UpdatePriceCommand command);
     Optional<Lawyer> handle(UpdateWonCasesCommand command);
     Optional<Lawyer> handle(UpdateYearExperienceCommand command);
