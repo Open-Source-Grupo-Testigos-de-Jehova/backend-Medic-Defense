@@ -1,7 +1,9 @@
 package com.medicdefense.backend.profiles.domain.model.aggregate;
 
+import com.medicdefense.backend.iam.domain.model.aggregates.User;
 import com.medicdefense.backend.profiles.domain.model.valueobjects.MedicDefenseRecordId;
 import com.medicdefense.backend.profiles.domain.model.valueobjects.ProfileId;
+import com.medicdefense.backend.profiles.domain.model.valueobjects.UserId;
 import com.medicdefense.backend.shared.domain.model.aggregates.AuditableAbstractAggregateRoot;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
@@ -18,6 +20,9 @@ public class Medic extends AuditableAbstractAggregateRoot<Medic> {
     @Embedded
     private ProfileId profileId;
 
+    @Embedded
+    private UserId userId;
+
     @NotNull
     private int ConsultationsMade;
 
@@ -31,22 +36,16 @@ public class Medic extends AuditableAbstractAggregateRoot<Medic> {
         PaidServices = 0;
     }
 
-    public Medic(ProfileId profileId) {
+    public Medic(ProfileId profileId, UserId userId) {
         this();
         this.profileId = profileId;
+        this.userId = userId;
     }
 
-    public Medic(long profileId) {
+    public Medic(long profileId, Long userId) {
         this();
         this.profileId = new ProfileId(profileId);
-    }
-
-    public void updateConsultationsMade(int consultationsMade) {
-        ConsultationsMade = consultationsMade;
-    }
-
-    public void updatePaidServices(int paidServices) {
-        PaidServices = paidServices;
+        this.userId = new UserId(userId);
     }
 
     public String getMedicRecordId() {
@@ -65,5 +64,9 @@ public class Medic extends AuditableAbstractAggregateRoot<Medic> {
 
     public Long getProfileId() {
         return this.profileId.profileId();
+    }
+
+    public Long getUserId() {
+        return this.userId.userId();
     }
 }

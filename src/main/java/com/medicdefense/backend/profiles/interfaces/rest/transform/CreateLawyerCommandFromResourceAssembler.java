@@ -6,6 +6,8 @@ import com.medicdefense.backend.profiles.interfaces.rest.resources.CreateLawyerR
 public class CreateLawyerCommandFromResourceAssembler {
     public static CreateLawyerCommand toCommandFromResource(CreateLawyerResource resource) {
         return new CreateLawyerCommand(
+                resource.userName(),
+                resource.password(),
                 resource.firstName(),
                 resource.lastName(),
                 resource.email(),

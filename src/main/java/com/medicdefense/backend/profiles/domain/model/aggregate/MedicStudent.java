@@ -3,6 +3,7 @@ package com.medicdefense.backend.profiles.domain.model.aggregate;
 import com.medicdefense.backend.profiles.domain.model.valueobjects.MedicDefenseRecordId;
 import com.medicdefense.backend.profiles.domain.model.valueobjects.ProfileId;
 import com.medicdefense.backend.profiles.domain.model.entities.University;
+import com.medicdefense.backend.profiles.domain.model.valueobjects.UserId;
 import com.medicdefense.backend.shared.domain.model.aggregates.AuditableAbstractAggregateRoot;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
@@ -20,6 +21,9 @@ public class MedicStudent extends AuditableAbstractAggregateRoot<MedicStudent> {
 
     @Embedded
     private ProfileId profileId;
+
+    @Embedded
+    private UserId userId;
 
     @NotNull
     private int ConsultationsMade;
@@ -39,24 +43,18 @@ public class MedicStudent extends AuditableAbstractAggregateRoot<MedicStudent> {
         PaidServices = 0;
     }
 
-    public MedicStudent(ProfileId profileId, University university) {
+    public MedicStudent(ProfileId profileId, University university, UserId userId) {
         this();
         this.profileId = profileId;
         this.university = university;
         this.university.setMedicStudent(this);
+        this.userId = userId;
     }
 
-    public MedicStudent(long profileId) {
+    public MedicStudent(long profileId, Long userId) {
         this();
         this.profileId = new ProfileId(profileId);
-    }
-
-    public void updateConsultationsMade(int consultationsMade) {
-        ConsultationsMade = consultationsMade;
-    }
-
-    public void updatePaidServices(int paidServices) {
-        PaidServices = paidServices;
+        this.userId = new UserId(userId);
     }
 
     public String getMedicStudentRecordId() {
@@ -75,6 +73,10 @@ public class MedicStudent extends AuditableAbstractAggregateRoot<MedicStudent> {
 
     public Long getProfileId() {
         return this.profileId.profileId();
+    }
+
+    public Long getUserId() {
+        return this.userId.userId();
     }
 
     public void addUniversity(University university) {

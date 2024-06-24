@@ -8,6 +8,7 @@ public class LawyerResourceFromEntityAssembler {
         return new LawyerResource(
                 entity.getLawyerRecordId(),
                 entity.getProfileId(),
+                entity.getUserId(),
                 entity.getYearsExperience(),
                 entity.getCasesWon(),
                 entity.getPrice()

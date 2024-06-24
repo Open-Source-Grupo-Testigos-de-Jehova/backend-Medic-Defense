@@ -1,6 +1,7 @@
 package com.medicdefense.backend.profiles.application.internal.commandservices;
 
 import com.medicdefense.backend.profiles.application.internal.outboundservices.acl.ExternalProfileService;
+import com.medicdefense.backend.profiles.application.internal.outboundservices.acl.ExternalUserService;
 import com.medicdefense.backend.profiles.domain.model.aggregate.MedicStudent;
 import com.medicdefense.backend.profiles.domain.model.commands.AddOneToConsultationMedicStudentMadeCommand;
 import com.medicdefense.backend.profiles.domain.model.commands.AddOneToPaidServiceMedicStudentCommand;
@@ -13,6 +14,7 @@ import com.medicdefense.backend.profiles.infrasctructure.persistence.jpa.reposit
 import com.medicdefense.backend.profiles.infrasctructure.persistence.jpa.repositories.UniversityRepository;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.Optional;
 
 @Service
@@ -20,18 +22,24 @@ public class MedicStudentCommandServiceImpl implements MedicStudentCommandServic
     private final MedicStudentRepository medicStudentRepository;
     private final ExternalProfileService externalProfileService;
     private final UniversityRepository universityRepository;
+    private final ExternalUserService externalUserService;
 
-    public MedicStudentCommandServiceImpl(MedicStudentRepository medicStudentRepository, ExternalProfileService externalProfileService, UniversityRepository universityRepository) {
+    public MedicStudentCommandServiceImpl(MedicStudentRepository medicStudentRepository, ExternalProfileService externalProfileService, UniversityRepository universityRepository, ExternalUserService externalUserService) {
         this.medicStudentRepository = medicStudentRepository;
         this.externalProfileService = externalProfileService;
         this.universityRepository = universityRepository;
+        this.externalUserService = externalUserService;
     }
 
     @Override
     public MedicDefenseRecordId handle(CreateMedicStudentCommand command) {
 
+        var role = new ArrayList<String>();
+        role.add("ROLE_MEDIC_STUDENT");
         // Fetch medicDefenseId by email
         var profileId = externalProfileService.fetchProfileIdByEmail(command.email());
+
+        var userId = externalUserService.fetchUserIdByUsername(command.userName());
 
         // If medicDefenseId is empty, create profile
         if (profileId.isEmpty()) {
@@ -49,6 +57,16 @@ public class MedicStudentCommandServiceImpl implements MedicStudentCommandServic
             });
         }
 
+        if(userId.isEmpty()) {
+            userId = externalUserService.createUser(command.userName(), command.password(), role);
+        } else {
+            medicStudentRepository.findByUserId(userId.get()).ifPresent(student -> {
+                throw new IllegalArgumentException("Student already exists");
+            });
+        }
+
+        if (userId.isEmpty()) throw new IllegalArgumentException("Unable to create user");
+
         if (profileId.isEmpty()) throw new IllegalArgumentException("Unable to create profile");
 
         var university = new University();
@@ -60,9 +78,9 @@ public class MedicStudentCommandServiceImpl implements MedicStudentCommandServic
             universityRepository.save(university);
         }
 
-        var medicStudent = new MedicStudent(profileId.get(), university);
+        var medicStudent = new MedicStudent(profileId.get(), university, userId.get());
 
-        university.setMedicStudent(medicStudent); // Aseguramos la relación bidireccional
+        university.setMedicStudent(medicStudent);
         medicStudentRepository.save(medicStudent);
 
         return medicStudent.getMedicDefenseMedicStudentId();

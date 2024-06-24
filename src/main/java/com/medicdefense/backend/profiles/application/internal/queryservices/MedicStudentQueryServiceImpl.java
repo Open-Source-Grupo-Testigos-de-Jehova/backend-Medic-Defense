@@ -2,10 +2,7 @@ package com.medicdefense.backend.profiles.application.internal.queryservices;
 
 import com.medicdefense.backend.profiles.domain.model.aggregate.MedicStudent;
 import com.medicdefense.backend.profiles.domain.model.entities.University;
-import com.medicdefense.backend.profiles.domain.model.queries.GetAllMedicStudentsQuery;
-import com.medicdefense.backend.profiles.domain.model.queries.GetMedicStudentByMedicDefenseRecordIdQuery;
-import com.medicdefense.backend.profiles.domain.model.queries.GetMedicStudentByProfileIdQuery;
-import com.medicdefense.backend.profiles.domain.model.queries.GetUniversityByMedicStudentIdAndNameQuery;
+import com.medicdefense.backend.profiles.domain.model.queries.*;
 import com.medicdefense.backend.profiles.domain.model.valueobjects.MedicDefenseRecordId;
 import com.medicdefense.backend.profiles.domain.services.MedicStudentQueryService;
 import com.medicdefense.backend.profiles.infrasctructure.persistence.jpa.repositories.MedicStudentRepository;
@@ -43,5 +40,10 @@ public class MedicStudentQueryServiceImpl implements MedicStudentQueryService {
         return medicStudentRepository
                 .findByMedicDefenseMedicStudentId(medicStudentId)
                 .map(MedicStudent::getUniversity);
+    }
+
+    @Override
+    public Optional<MedicStudent> handle(GetMedicStudentByUserIdQuery query) {
+        return medicStudentRepository.findByUserId(query.userId());
     }
 }

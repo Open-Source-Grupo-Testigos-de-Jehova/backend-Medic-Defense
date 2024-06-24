@@ -5,6 +5,7 @@ import com.medicdefense.backend.profiles.domain.model.aggregate.Lawyer;
 import com.medicdefense.backend.profiles.domain.model.queries.GetAllLawyersQuery;
 import com.medicdefense.backend.profiles.domain.model.queries.GetLawyerByMedicDefenseRecordIdQuery;
 import com.medicdefense.backend.profiles.domain.model.queries.GetLawyerByProfileIdQuery;
+import com.medicdefense.backend.profiles.domain.model.queries.GetLawyerByUserIdQuery;
 import com.medicdefense.backend.profiles.domain.services.LawyerQueryService;
 import com.medicdefense.backend.profiles.infrasctructure.persistence.jpa.repositories.LawyerRepository;
 import org.springframework.stereotype.Service;
@@ -33,5 +34,10 @@ public class LawyerQueryServiceImpl implements LawyerQueryService {
     @Override
     public List<Lawyer> handle(GetAllLawyersQuery query) {
         return lawyerRepository.findAll();
+    }
+
+    @Override
+    public Optional<Lawyer> handle(GetLawyerByUserIdQuery query) {
+        return lawyerRepository.findByUserId(query.userId());
     }
 }

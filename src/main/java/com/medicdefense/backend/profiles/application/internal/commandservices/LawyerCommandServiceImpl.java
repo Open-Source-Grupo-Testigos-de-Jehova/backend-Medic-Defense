@@ -1,6 +1,8 @@
 package com.medicdefense.backend.profiles.application.internal.commandservices;
 
+import com.medicdefense.backend.iam.interfaces.acl.IamContextFacade;
 import com.medicdefense.backend.profiles.application.internal.outboundservices.acl.ExternalProfileService;
+import com.medicdefense.backend.profiles.application.internal.outboundservices.acl.ExternalUserService;
 import com.medicdefense.backend.profiles.domain.model.aggregate.Lawyer;
 import com.medicdefense.backend.profiles.domain.model.commands.*;
 import com.medicdefense.backend.profiles.domain.model.valueobjects.MedicDefenseRecordId;
@@ -8,6 +10,7 @@ import com.medicdefense.backend.profiles.domain.services.LawyerCommandService;
 import com.medicdefense.backend.profiles.infrasctructure.persistence.jpa.repositories.LawyerRepository;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.Optional;
 
 @Service
@@ -15,18 +18,24 @@ public class LawyerCommandServiceImpl implements LawyerCommandService {
 
     private final LawyerRepository lawyerRepository;
     private final ExternalProfileService externalProfileService;
+    private final ExternalUserService externalUserService;
 
-    public LawyerCommandServiceImpl(LawyerRepository lawyerRepository, ExternalProfileService externalProfileService) {
+    public LawyerCommandServiceImpl(LawyerRepository lawyerRepository, ExternalProfileService externalProfileService, ExternalUserService externalUserService) {
         this.lawyerRepository = lawyerRepository;
         this.externalProfileService = externalProfileService;
+        this.externalUserService = externalUserService;
     }
 
 
     @Override
     public MedicDefenseRecordId handle(CreateLawyerCommand command) {
 
+        var role = new ArrayList<String>();
+        role.add("ROLE_LAWYER");
         // Fetch medicDefenseId by email
         var profileId = externalProfileService.fetchProfileIdByEmail(command.email());
+
+        var userId = externalUserService.fetchUserIdByUsername(command.userName());
 
         // If medicDefenseId is empty, create profile
         if (profileId.isEmpty()) {
@@ -44,10 +53,20 @@ public class LawyerCommandServiceImpl implements LawyerCommandService {
             });
         }
 
+        if(userId.isEmpty()) {
+            userId = externalUserService.createUser(command.userName(), command.password(), role);
+        } else {
+            lawyerRepository.findByUserId(userId.get()).ifPresent(student -> {
+                throw new IllegalArgumentException("Student already exists");
+            });
+        }
+
+        if (userId.isEmpty()) throw new IllegalArgumentException("Unable to create user");
+
         if (profileId.isEmpty()) throw new IllegalArgumentException("Unable to create profile");
 
         var lawyer = new Lawyer(
-                profileId.get(), command.yearsExperience(), command.casesWon(), command.price());
+                profileId.get(), userId.get(), command.yearsExperience(), command.casesWon(), command.price());
         lawyerRepository.save(lawyer);
         return lawyer.getMedicDefenseRecordId();
     }

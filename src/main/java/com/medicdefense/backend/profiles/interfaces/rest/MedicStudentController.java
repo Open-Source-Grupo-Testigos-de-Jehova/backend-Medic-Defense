@@ -1,10 +1,8 @@
 package com.medicdefense.backend.profiles.interfaces.rest;
 
-import com.medicdefense.backend.profiles.domain.model.queries.GetAllMedicStudentsQuery;
-import com.medicdefense.backend.profiles.domain.model.queries.GetMedicStudentByMedicDefenseRecordIdQuery;
-import com.medicdefense.backend.profiles.domain.model.queries.GetMedicStudentByProfileIdQuery;
+import com.medicdefense.backend.profiles.domain.model.queries.*;
 import com.medicdefense.backend.profiles.domain.model.valueobjects.MedicDefenseRecordId;
-import com.medicdefense.backend.profiles.domain.model.valueobjects.ProfileId;
+import com.medicdefense.backend.profiles.domain.model.valueobjects.UserId;
 import com.medicdefense.backend.profiles.domain.services.MedicStudentCommandService;
 import com.medicdefense.backend.profiles.domain.services.MedicStudentQueryService;
 import com.medicdefense.backend.profiles.interfaces.rest.resources.CreateMedicStudentResource;
@@ -52,7 +50,7 @@ public class MedicStudentController {
         return new ResponseEntity<>(medicStudentResource, HttpStatus.CREATED);
     }
 
-    @GetMapping("/{recordId}")
+    @GetMapping("/{recordId}/medic-defense-record")
     public ResponseEntity<MedicStudentResource> getMedicStudentByRecordId(@PathVariable String recordId)
     {
         var medicDefenseRecordId = new MedicDefenseRecordId(recordId);
@@ -64,6 +62,19 @@ public class MedicStudentController {
         }
         var medicStudentResource = MedicStudentResourceFromEntityAssembler.toResourceFromEntity(medicStudent.get());
         return ResponseEntity.ok(medicStudentResource);
+    }
+
+    @GetMapping("/{userId}/user")
+    public ResponseEntity<MedicStudentResource> getMedicByUserId(@PathVariable Long userId)
+    {
+        var getMedicByUserIdQuery = new GetMedicStudentByUserIdQuery(new UserId(userId));
+        var medicStudent = medicStudentQueryService.handle(getMedicByUserIdQuery);
+        if(medicStudent.isEmpty())
+        {
+            return ResponseEntity.notFound().build();
+        }
+        var medicResource = MedicStudentResourceFromEntityAssembler.toResourceFromEntity(medicStudent.get());
+        return ResponseEntity.ok(medicResource);
     }
 
     @GetMapping

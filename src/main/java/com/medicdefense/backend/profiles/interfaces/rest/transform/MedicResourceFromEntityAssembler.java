@@ -8,6 +8,7 @@ public class MedicResourceFromEntityAssembler {
         return new MedicResource(
                 entity.getMedicRecordId(),
                 entity.getProfileId(),
+                entity.getUserId(),
                 entity.getConsultationsMade(),
                 entity.getPaidServices()
         );
