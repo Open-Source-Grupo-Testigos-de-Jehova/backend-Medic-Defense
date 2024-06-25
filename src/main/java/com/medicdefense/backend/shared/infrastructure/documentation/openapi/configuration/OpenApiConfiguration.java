@@ -14,14 +14,14 @@ public class OpenApiConfiguration {
         // General configuration
         var openApi = new OpenAPI();
         openApi.info(new Info()
-                .title("ACME Learning Center Platform API")
-                .description("ACME Learning Platform application REST API documentation.")
-                .version("v1.0.0")
-                .license(new License().name("Apache 2.0")
-                        .url("https://springdoc.org")))
+                        .title("Medic Defense Platform API")
+                        .description("Medic defense Platform application REST API documentation.")
+                        .version("v1.0.0")
+                        .license(new License().name("Apache 2.0")
+                                .url("https://springdoc.org")))
                 .externalDocs(new ExternalDocumentation()
-                        .description("ACME Learning Platform wiki Documentation")
-                        .url("https://acme-learning-platform.wiki.github.io/docs"));
+                        .description("Medic defense Platform wiki Documentation")
+                        .url("https://github.com/Open-Source-Grupo-Testigos-de-Jehova/backend-Medic-Defense.git"));
         return openApi;
     }
 }

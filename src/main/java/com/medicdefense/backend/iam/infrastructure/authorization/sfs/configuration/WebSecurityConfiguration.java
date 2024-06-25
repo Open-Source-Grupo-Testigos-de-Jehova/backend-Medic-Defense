@@ -81,7 +81,8 @@ public class WebSecurityConfiguration {
                                 "/swagger-resources/**",
                                 "/webjars/**",
                                 "/api/v1/users/**",
-                                "/api/v1/medic"
+                                "/api/v1/medic",
+                                "/api/v1/educational-resources"
                         ).permitAll()
                         .anyRequest().authenticated());
         http.authenticationProvider(authenticationProvider());
